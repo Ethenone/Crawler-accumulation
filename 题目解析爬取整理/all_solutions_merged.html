@@ -1,0 +1,5642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Solutions - Introduction to Linear Optimization</title>
+    <style>
+        /* 重置样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f8f9fa;
+            padding: 20px;
+            counter-reset: page-counter;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        /* 头部样式 */
+        .header {
+            background: linear-gradient(135deg, #5e33bf 0%, #3b7ddd 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* 统计信息 */
+        .stats-bar {
+            background: #f1f3f9;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #5e33bf;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 目录样式 */
+        .toc {
+            padding: 40px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .toc h2 {
+            color: #5e33bf;
+            margin-bottom: 25px;
+            font-size: 24px;
+            border-left: 4px solid #5e33bf;
+            padding-left: 15px;
+        }
+        
+        .toc-list {
+            column-count: 2;
+            column-gap: 40px;
+        }
+        
+        .toc-item {
+            margin-bottom: 12px;
+            break-inside: avoid;
+            list-style: none;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .toc-item:before {
+            content: counter(page-counter) ".";
+            counter-increment: page-counter;
+            position: absolute;
+            left: 0;
+            color: #5e33bf;
+            font-weight: bold;
+            width: 20px;
+            text-align: right;
+        }
+        
+        .toc-item a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 8px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .toc-item a:hover {
+            background: #5e33bf;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        /* 页面内容样式 */
+        .pages-container {
+            padding: 40px;
+        }
+        
+        .page-section {
+            margin-bottom: 60px;
+            page-break-inside: avoid;
+            position: relative;
+            padding-top: 50px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .page-section:first-of-type {
+            border-top: none;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #5e33bf;
+        }
+        
+        .page-number {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #5e33bf;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 3px 10px rgba(94, 51, 191, 0.3);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            color: #5e33bf;
+            margin-bottom: 10px;
+            font-weight: 600;
+            padding-right: 50px;
+        }
+        
+        .page-meta {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .page-meta a {
+            color: #5e33bf;
+            text-decoration: none;
+        }
+        
+        .page-meta a:hover {
+            text-decoration: underline;
+        }
+        
+        .page-content {
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        /* 内容元素样式 */
+        .page-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        
+        .page-content h1, 
+        .page-content h2, 
+        .page-content h3 {
+            color: #5e33bf;
+            margin: 30px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        .page-content h1 { font-size: 22px; }
+        .page-content h2 { font-size: 20px; }
+        .page-content h3 { font-size: 18px; }
+        
+        .page-content code, 
+        .page-content pre {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #f6f8fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e1e4e8;
+            overflow-x: auto;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+        
+        .page-content pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+        }
+        
+        .page-content blockquote {
+            border-left: 4px solid #5e33bf;
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #555;
+            font-style: italic;
+        }
+        
+        .page-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .page-content th, 
+        .page-content td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .page-content th {
+            background: #5e33bf;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .page-content tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .page-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .page-content .math {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            overflow-x: auto;
+            border: 1px solid #e0e0e0;
+        }
+        
+        /* 页脚样式 */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin: 10px 0;
+            opacity: 0.8;
+        }
+        
+        .footer .source-url {
+            font-size: 14px;
+            word-break: break-all;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
+        
+        /* 导航按钮 */
+        .navigation {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            display: block;
+            width: 50px;
+            height: 50px;
+            background: #5e33bf;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            margin: 10px 0;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(94, 51, 191, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(94, 51, 191, 0.5);
+        }
+        
+        /* 打印样式 */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                font-size: 12pt;
+            }
+            
+            .container {
+                box-shadow: none;
+                margin: 0;
+                max-width: none;
+            }
+            
+            .header, .stats-bar, .toc, .footer, .navigation {
+                display: none;
+            }
+            
+            .page-section {
+                page-break-before: always;
+                margin-bottom: 0;
+                padding-top: 0;
+            }
+            
+            .page-section:first-of-type {
+                page-break-before: avoid;
+            }
+            
+            .page-number {
+                background: none;
+                color: black;
+                box-shadow: none;
+                font-size: 12pt;
+                top: -10px;
+            }
+            
+            .page-content img {
+                max-width: 80% !important;
+                box-shadow: none;
+            }
+            
+            .page-content pre {
+                background: none;
+                color: black;
+                border: 1px solid #ccc;
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .stats-bar {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .stat-item {
+                min-width: 100%;
+            }
+            
+            .toc {
+                padding: 20px;
+            }
+            
+            .toc-list {
+                column-count: 1;
+            }
+            
+            .pages-container {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .navigation {
+                right: 10px;
+                bottom: 10px;
+            }
+            
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    
+    <!-- MathJax for mathematical formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\(', '\)']],
+                displayMath: [['$$', '$$'], ['\[', '\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    
+    <script>
+        // 平滑滚动到锚点
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有目录链接添加平滑滚动
+            document.querySelectorAll('.toc-item a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // 显示/隐藏回到顶部按钮
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTop.style.display = 'block';
+                } else {
+                    backToTop.style.display = 'none';
+                }
+            });
+            
+            // 打印功能
+            window.printDocument = function() {
+                window.print();
+            };
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Introduction to Linear Optimization</h1>
+            <p>Complete Solutions Collection - All in One Document</p>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">{len(all_pages_data)}</div>
+                <div class="stat-label">Total Solutions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{datetime.now().strftime('%Y-%m-%d')}</div>
+                <div class="stat-label">Generated Date</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{len(all_pages_data)}</div>
+                <div class="stat-label">Pages</div>
+            </div>
+        </div>
+        
+        <div class="toc">
+            <h2>📑 Table of Contents</h2>
+            <ul class="toc-list">
+                <li class="toc-item"><a href="#page-1">Exercise 1.1* (Concave convex functions are affine)</a></li>
+                <li class="toc-item"><a href="#page-2">Exercise 1.10 (Production and inventory planning)</a></li>
+                <li class="toc-item"><a href="#page-3">Exercise 1.11 (Optimal currency conversion)</a></li>
+                <li class="toc-item"><a href="#page-4">Exercise 1.12 (Chebychev center)</a></li>
+                <li class="toc-item"><a href="#page-5">Exercise 1.13 (Linear fractional programming)</a></li>
+            </ul>
+        </div>
+        
+        <div class="pages-container">
+
+            <div class="page-section" id="page-1">
+                <div class="page-number">1</div>
+                <div class="page-header">
+                    <h2 class="page-title">Exercise 1.1* (Concave convex functions are affine)</h2>
+                    <div class="page-meta">
+                        Source: <a href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-1::152" target="_blank">https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-1::152</a>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <main class="col-12 col-md-8 content pt-4">
+<div class="card">
+<div class="card-body">
+<!-- Breadcrumb -->
+<div>
+<div class="d-none d-lg-block">
+<p>
+<span>
+<a class="external-link" href="https://solverer.com/">Homepage</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions">Solution manuals</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas">Dimitris Bertsimas</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">Introduction to Linear Optimization</a>
+<span aria-label="and then">›</span>
+</span><span>
+<span>Exercise 1.1* (Concave convex functions are affine)</span>
+</span>
+</p>
+</div>
+<div class="d-lg-none">
+<a aria-label="Back to page: Introduction to Linear Optimization" class="btn btn-link text-decoration-none" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">
+<i class="align-middle" data-feather="arrow-left"></i>
+<span>Introduction to Linear Optimization</span>
+</a>
+</div>
+</div>
+<main>
+<div class="container">
+<div class="row align-items-center mb-5">
+<div class="col-12">
+<h1>Exercise 1.1* (Concave convex functions are affine)</h1>
+<p>
+<!--  l. 15  --><p class="noindent">Suppose that a function <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>f</mi> <mo class="MathClass-punc">:</mo> <msup><mrow><mi>ℝ</mi></mrow><mrow><mi>n</mi></mrow></msup> <mo class="MathClass-rel">→</mo> <mi>ℝ</mi></mrow></math> is both
+concave and convex. Prove that <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi></math>
+is an affine function.
+</p>
+</p>
+</div>
+</div>
+<!-- /*<div th:replace="~{${templateCollection}+'/fragments/items-listings/items-listing-default' :: defaultSubcategories(${subitems})}"></div>*/-->
+<div>
+<div class="row mb-3">
+<div class="col">
+<h2>Answers</h2>
+</div>
+</div>
+<div class="row g-4">
+<div class="col-12">
+<div class="card h-100 flex-row">
+<div class="card-body d-flex flex-column justify-content-between">
+<div style="overflow-x: auto; -webkit-overflow-scrolling: touch;"><div class="proof">
+<!--   l. 25   -->
+<p class="indent"><span class="head"> <span class="ecti-1000">Proof.</span> </span>Our goal is to demonstrate that <!--   l. 25   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mi>
+    f
+   </mi>
+</math> is representable in the form <!--   tex4ht:inline   --></p><!--   l. 26   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+    f
+   </mi>
+<mo class="MathClass-open" stretchy="false">
+    (
+   </mo>
+<mstyle mathvariant="bold">
+<mi>
+     𝐱
+    </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+    )
+   </mo>
+<mo class="MathClass-rel" stretchy="false">
+    =
+   </mo>
+<msub>
+<mrow>
+<mi>
+      a
+     </mi>
+</mrow>
+<mrow>
+<mn>
+      0
+     </mn>
+</mrow>
+</msub>
+<mo class="MathClass-bin" stretchy="false">
+    +
+   </mo>
+<munderover accent="false" accentunder="false">
+<mrow>
+<mo>
+      ∑
+     </mo>
+</mrow>
+<mrow>
+<mi>
+      i
+     </mi>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mn>
+      1
+     </mn>
+</mrow>
+<mrow>
+<mi>
+      n
+     </mi>
+</mrow>
+</munderover>
+<msub>
+<mrow>
+<mi>
+      a
+     </mi>
+</mrow>
+<mrow>
+<mi>
+      i
+     </mi>
+</mrow>
+</msub>
+<msub>
+<mrow>
+<mi>
+      x
+     </mi>
+</mrow>
+<mrow>
+<mi>
+      i
+     </mi>
+</mrow>
+</msub>
+</mrow>
+</math><!--   l. 26   -->
+<p class="nopar">for some <!--   l. 27   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub>
+<mrow>
+<mi>
+       a
+      </mi>
+</mrow>
+<mrow>
+<mn>
+       0
+      </mn>
+</mrow>
+</msub>
+<mo class="MathClass-rel" stretchy="false">
+     ∈
+    </mo>
+<mi>
+     ℜ
+    </mi>
+<mo class="MathClass-punc" stretchy="false">
+     ,
+    </mo>
+<mstyle mathvariant="bold">
+<mi>
+      𝐚
+     </mi>
+</mstyle>
+<mo class="MathClass-rel" stretchy="false">
+     ∈
+    </mo>
+<msup>
+<mrow>
+<mi>
+       ℜ
+      </mi>
+</mrow>
+<mrow>
+<mi>
+       n
+      </mi>
+</mrow>
+</msup>
+</mrow>
+</math> (see the definition on page 15).</p><!--   l. 29   -->
+<p class="indent">The trick is to notice that <!--   l. 29   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+     f
+    </mi>
+<mo class="MathClass-rel" stretchy="false">
+     =
+    </mo>
+<mi>
+     f
+    </mi>
+<mo class="MathClass-open" stretchy="false">
+     (
+    </mo>
+<mstyle mathvariant="bold">
+<mn>
+      0
+     </mn>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+     )
+    </mo>
+<mo class="MathClass-bin" stretchy="false">
+     +
+    </mo>
+<msup>
+<mrow>
+<mi>
+       f
+      </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+       ∗
+      </mo>
+</mrow>
+</msup>
+</mrow>
+</math> for a linear function <!--   l. 29   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<msup>
+<mrow>
+<mi>
+      f
+     </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+      ∗
+     </mo>
+</mrow>
+</msup>
+</math>; thus, consider <!--   tex4ht:inline   --></p><!--   l. 30   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup>
+<mrow>
+<mi>
+      f
+     </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+      ∗
+     </mo>
+</mrow>
+</msup>
+<mo class="MathClass-punc" stretchy="false">
+    :
+   </mo>
+<msup>
+<mrow>
+<mi>
+      ℜ
+     </mi>
+</mrow>
+<mrow>
+<mi>
+      n
+     </mi>
+</mrow>
+</msup>
+<mo class="MathClass-rel" stretchy="false">
+    →
+   </mo>
+<mi>
+    ℜ
+   </mi>
+<mo class="MathClass-punc" stretchy="false">
+    ,
+   </mo>
+<mspace class="quad" width="1em"></mspace>
+<msup>
+<mrow>
+<mi>
+      f
+     </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+      ∗
+     </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+    (
+   </mo>
+<mstyle mathvariant="bold">
+<mi>
+     𝐱
+    </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+    )
+   </mo>
+<mo class="MathClass-rel" stretchy="false">
+    =
+   </mo>
+<mi>
+    f
+   </mi>
+<mo class="MathClass-open" stretchy="false">
+    (
+   </mo>
+<mstyle mathvariant="bold">
+<mi>
+     𝐱
+    </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+    )
+   </mo>
+<mo class="MathClass-bin" stretchy="false">
+    −
+   </mo>
+<mi>
+    f
+   </mi>
+<mrow>
+<mo fence="true" form="prefix">
+     (
+    </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mn>
+       0
+      </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+     )
+    </mo>
+</mrow>
+<mo class="MathClass-punc" stretchy="false">
+    .
+   </mo>
+</mrow>
+</math><!--   l. 30   -->
+<p class="nopar"></p><!--   l. 32   -->
+<p class="indent">We demonstrate that <!--   l. 32   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<msup>
+<mrow>
+<mi>
+      f
+     </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+      ∗
+     </mo>
+</mrow>
+</msup>
+</math> is indeed linear.</p>
+<ul class="itemize1">
+<li class="itemize"><!--   l. 34   -->
+<p class="noindent"><span class="ecti-1000">(convexity and concavity) We have </span><!--   l. 34   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+        (
+       </mo>
+<mrow>
+<mi>
+         λ
+        </mi>
+<mstyle mathvariant="bold">
+<mi>
+          𝐱
+         </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+         +
+        </mo>
+<mo class="MathClass-open" stretchy="false">
+         (
+        </mo>
+<mn>
+         1
+        </mn>
+<mo class="MathClass-bin" stretchy="false">
+         −
+        </mo>
+<mi>
+         λ
+        </mi>
+<mo class="MathClass-close" stretchy="false">
+         )
+        </mo>
+<mstyle mathvariant="bold">
+<mi>
+          𝐲
+         </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+        )
+       </mo>
+</mrow>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<mi>
+       λ
+      </mi>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+        (
+       </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+          𝐱
+         </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+        )
+       </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+       +
+      </mo>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mn>
+       1
+      </mn>
+<mo class="MathClass-bin" stretchy="false">
+       −
+      </mo>
+<mi>
+       λ
+      </mi>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+        (
+       </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+          𝐲
+         </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+        )
+       </mo>
+</mrow>
+<mo class="MathClass-punc" stretchy="false">
+       .
+      </mo>
+</mrow>
+</math><br class="newline"/>
+    Proof. By theorem assumption, <!--   l. 35   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mi>
+      f
+     </mi>
+</math> is convex. By Definition 1.1., <!--   tex4ht:inline   --></p><!--   l. 36   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mi>
+        λ
+       </mi>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mo class="MathClass-open" stretchy="false">
+        (
+       </mo>
+<mn>
+        1
+       </mn>
+<mo class="MathClass-bin" stretchy="false">
+        −
+       </mo>
+<mi>
+        λ
+       </mi>
+<mo class="MathClass-close" stretchy="false">
+        )
+       </mo>
+<mstyle mathvariant="bold">
+<mi>
+         𝐲
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-rel" stretchy="false">
+      ≤
+     </mo>
+<mi mathvariant="italic">
+      𝜆𝑓
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mn>
+      1
+     </mn>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mi>
+      λ
+     </mi>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐲
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-punc" stretchy="false">
+      .
+     </mo>
+</mrow>
+</math><!--   l. 36   -->
+<p class="nopar">Similarly, since <!--   l. 37   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mi>
+      f
+     </mi>
+</math> is concave, we have <!--   tex4ht:inline   --></p><!--   l. 38   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mi>
+        λ
+       </mi>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mo class="MathClass-open" stretchy="false">
+        (
+       </mo>
+<mn>
+        1
+       </mn>
+<mo class="MathClass-bin" stretchy="false">
+        −
+       </mo>
+<mi>
+        λ
+       </mi>
+<mo class="MathClass-close" stretchy="false">
+        )
+       </mo>
+<mstyle mathvariant="bold">
+<mi>
+         𝐲
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-rel" stretchy="false">
+      ≥
+     </mo>
+<mi mathvariant="italic">
+      𝜆𝑓
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mn>
+      1
+     </mn>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mi>
+      λ
+     </mi>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐲
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-punc" stretchy="false">
+      .
+     </mo>
+</mrow>
+</math><!--   l. 38   -->
+<p class="nopar">Combining both of these facts, we see that <!--   tex4ht:inline   --></p><!--   l. 40   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mi>
+        λ
+       </mi>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mo class="MathClass-open" stretchy="false">
+        (
+       </mo>
+<mn>
+        1
+       </mn>
+<mo class="MathClass-bin" stretchy="false">
+        −
+       </mo>
+<mi>
+        λ
+       </mi>
+<mo class="MathClass-close" stretchy="false">
+        )
+       </mo>
+<mstyle mathvariant="bold">
+<mi>
+         𝐲
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi mathvariant="italic">
+      𝜆𝑓
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mn>
+      1
+     </mn>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mi>
+      λ
+     </mi>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐲
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-punc" stretchy="false">
+      .
+     </mo>
+</mrow>
+</math><!--   l. 40   -->
+<p class="nopar">The same property must then also hold for <!--   l. 41   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+</math>:</p><!--   tex4ht:inline   --><!--   l. 47   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mtable class="align-star" columnalign="left" displaystyle="true" rowlines="none" style="">
+<mtr>
+<mtd class="align-odd" columnalign="right">
+<msup>
+<mrow>
+<mi>
+          f
+         </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+          ∗
+         </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mi>
+          λ
+         </mi>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+          +
+         </mo>
+<mo class="MathClass-open" stretchy="false">
+          (
+         </mo>
+<mn>
+          1
+         </mn>
+<mo class="MathClass-bin" stretchy="false">
+          −
+         </mo>
+<mi>
+          λ
+         </mi>
+<mo class="MathClass-close" stretchy="false">
+          )
+         </mo>
+<mstyle mathvariant="bold">
+<mi>
+           𝐲
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+</mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+        =
+       </mo>
+<mi>
+        f
+       </mi>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mi>
+          λ
+         </mi>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+          +
+         </mo>
+<mo class="MathClass-open" stretchy="false">
+          (
+         </mo>
+<mn>
+          1
+         </mn>
+<mo class="MathClass-bin" stretchy="false">
+          −
+         </mo>
+<mi>
+          λ
+         </mi>
+<mo class="MathClass-close" stretchy="false">
+          )
+         </mo>
+<mstyle mathvariant="bold">
+<mi>
+           𝐲
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+        −
+       </mo>
+<mi>
+        f
+       </mi>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mn>
+           0
+          </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+<mtr>
+<mtd class="align-odd" columnalign="right"></mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+        =
+       </mo>
+<mi mathvariant="italic">
+        𝜆𝑓
+       </mi>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mo class="MathClass-open" stretchy="false">
+        (
+       </mo>
+<mn>
+        1
+       </mn>
+<mo class="MathClass-bin" stretchy="false">
+        −
+       </mo>
+<mi>
+        λ
+       </mi>
+<mo class="MathClass-close" stretchy="false">
+        )
+       </mo>
+<mi>
+        f
+       </mi>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐲
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+        −
+       </mo>
+<mi mathvariant="italic">
+        𝜆𝑓
+       </mi>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mn>
+           0
+          </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+        −
+       </mo>
+<mo class="MathClass-open" stretchy="false">
+        (
+       </mo>
+<mn>
+        1
+       </mn>
+<mo class="MathClass-bin" stretchy="false">
+        −
+       </mo>
+<mi>
+        λ
+       </mi>
+<mo class="MathClass-close" stretchy="false">
+        )
+       </mo>
+<mi>
+        f
+       </mi>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mn>
+           0
+          </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+<mtr>
+<mtd class="align-odd" columnalign="right"></mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+        =
+       </mo>
+<mi>
+        λ
+       </mi>
+<msup>
+<mrow>
+<mi>
+          f
+         </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+          ∗
+         </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mo class="MathClass-open" stretchy="false">
+        (
+       </mo>
+<mn>
+        1
+       </mn>
+<mo class="MathClass-bin" stretchy="false">
+        −
+       </mo>
+<mi>
+        λ
+       </mi>
+<mo class="MathClass-close" stretchy="false">
+        )
+       </mo>
+<msup>
+<mrow>
+<mi>
+          f
+         </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+          ∗
+         </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐲
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mo class="MathClass-punc" stretchy="false">
+        .
+       </mo>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+</mtable>
+</math></li>
+<li class="itemize"><!--   l. 49   -->
+<p class="noindent"><span class="ecti-1000">(homogeneity) We have </span><!--   l. 49   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mi>
+       c
+      </mi>
+<mstyle mathvariant="bold">
+<mi>
+        𝐱
+       </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<mi>
+       c
+      </mi>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mstyle mathvariant="bold">
+<mi>
+        𝐱
+       </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+</mrow>
+</math><span class="ecti-1000">for any </span><!--   l. 49   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       c
+      </mi>
+<mo class="MathClass-rel" stretchy="false">
+       ≥
+      </mo>
+<mn>
+       0
+      </mn>
+</mrow>
+</math><span class="ecti-1000">.</span><br class="newline"/>
+    Proof. We break up this assertion into cases. The case when <!--   l. 50   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       c
+      </mi>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<mn>
+       0
+      </mn>
+</mrow>
+</math> or <!--   l. 50   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       c
+      </mi>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<mn>
+       1
+      </mn>
+</mrow>
+</math> follows trivially from convexity-concavity condition (also notice that <!--   l. 50   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mstyle mathvariant="bold">
+<mn>
+        0
+       </mn>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<mn>
+       0
+      </mn>
+</mrow>
+</math>). If <!--   l. 50   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       c
+      </mi>
+<mo class="MathClass-rel" stretchy="false">
+       ∈
+      </mo>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mn>
+       0
+      </mn>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<mn>
+       1
+      </mn>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+</mrow>
+</math> then <!--   tex4ht:inline   --></p><!--   l. 50   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mi>
+      c
+     </mi>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mi>
+      c
+     </mi>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mn>
+      1
+     </mn>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mi>
+      c
+     </mi>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mstyle mathvariant="bold">
+<mn>
+       0
+      </mn>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi>
+      c
+     </mi>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mn>
+      1
+     </mn>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mi>
+      c
+     </mi>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mstyle mathvariant="bold">
+<mn>
+       0
+      </mn>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi mathvariant="italic">
+      𝑐𝑓
+     </mi>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-punc" stretchy="false">
+      .
+     </mo>
+</mrow>
+</math><!--   l. 50   -->
+<p class="nopar">Finally, if <!--   l. 51   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       c
+      </mi>
+<mo class="MathClass-rel" stretchy="false">
+       ∈
+      </mo>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mn>
+       1
+      </mn>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<mo class="MathClass-bin" stretchy="false">
+       +
+      </mo>
+<mi>
+       ∞
+      </mi>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+</mrow>
+</math>, then <!--   l. 51   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mfrac>
+<mrow>
+<mn>
+         1
+        </mn>
+</mrow>
+<mrow>
+<mi>
+         c
+        </mi>
+</mrow>
+</mfrac>
+<mo class="MathClass-rel" stretchy="false">
+       ∈
+      </mo>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mn>
+       0
+      </mn>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<mn>
+       1
+      </mn>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+</mrow>
+</math> and so, <!--   tex4ht:inline   --></p><!--   l. 52   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mfrac>
+<mrow>
+<mn>
+          1
+         </mn>
+</mrow>
+<mrow>
+<mi>
+          c
+         </mi>
+</mrow>
+</mfrac>
+<mi>
+        c
+       </mi>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mn>
+          1
+         </mn>
+<mo class="MathClass-bin" stretchy="false">
+          −
+         </mo>
+<mfrac>
+<mrow>
+<mn>
+            1
+           </mn>
+</mrow>
+<mrow>
+<mi>
+            c
+           </mi>
+</mrow>
+</mfrac>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mstyle mathvariant="bold">
+<mn>
+         0
+        </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mfrac>
+<mrow>
+<mn>
+        1
+       </mn>
+</mrow>
+<mrow>
+<mi>
+        c
+       </mi>
+</mrow>
+</mfrac>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-punc" stretchy="false">
+      .
+     </mo>
+</mrow>
+</math><!--   l. 52   -->
+<p class="nopar">Multiplying both sides by <!--   l. 53   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mi>
+      c
+     </mi>
+</math> yields the desired result.</p></li>
+<li class="itemize"><!--   l. 55   -->
+<p class="noindent"><span class="ecti-1000">(additivity) We have </span><!--   l. 55   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mstyle mathvariant="bold">
+<mi>
+        𝐱
+       </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+       +
+      </mo>
+<mstyle mathvariant="bold">
+<mi>
+        𝐲
+       </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mstyle mathvariant="bold">
+<mi>
+        𝐱
+       </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+<mo class="MathClass-bin" stretchy="false">
+       +
+      </mo>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mstyle mathvariant="bold">
+<mi>
+        𝐲
+       </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+</mrow>
+</math><span class="ecti-1000">for any </span><!--   l. 55   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+        𝐱
+       </mi>
+</mstyle>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<mstyle mathvariant="bold">
+<mi>
+        𝐲
+       </mi>
+</mstyle>
+<mo class="MathClass-rel" stretchy="false">
+       ∈
+      </mo>
+<msup>
+<mrow>
+<mi>
+         ℜ
+        </mi>
+</mrow>
+<mrow>
+<mi>
+         n
+        </mi>
+</mrow>
+</msup>
+</mrow>
+</math><span class="ecti-1000">.</span><br class="newline"/>
+    Proof. This is simply a matter of setting <!--   l. 56   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       λ
+      </mi>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<mfrac>
+<mrow>
+<mn>
+         1
+        </mn>
+</mrow>
+<mrow>
+<mn>
+         2
+        </mn>
+</mrow>
+</mfrac>
+</mrow>
+</math> and following the convexity-concavity equation:</p><!--   tex4ht:inline   --><!--   l. 62   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mtable class="align-star" columnalign="left" displaystyle="true" rowlines="none" style="">
+<mtr>
+<mtd class="align-odd" columnalign="right">
+<msup>
+<mrow>
+<mi>
+          f
+         </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+          ∗
+         </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+          +
+         </mo>
+<mstyle mathvariant="bold">
+<mi>
+           𝐲
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+</mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+        =
+       </mo>
+<msup>
+<mrow>
+<mi>
+          f
+         </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+          ∗
+         </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mfrac>
+<mrow>
+<mn>
+            1
+           </mn>
+</mrow>
+<mrow>
+<mn>
+            2
+           </mn>
+</mrow>
+</mfrac>
+<mo class="MathClass-bin" stretchy="false">
+          ⋅
+         </mo>
+<mn>
+          2
+         </mn>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+          +
+         </mo>
+<mfrac>
+<mrow>
+<mn>
+            1
+           </mn>
+</mrow>
+<mrow>
+<mn>
+            2
+           </mn>
+</mrow>
+</mfrac>
+<mo class="MathClass-bin" stretchy="false">
+          ⋅
+         </mo>
+<mn>
+          2
+         </mn>
+<mstyle mathvariant="bold">
+<mi>
+           𝐲
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+<mtr>
+<mtd class="align-odd" columnalign="right"></mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+        =
+       </mo>
+<mfrac>
+<mrow>
+<mn>
+          1
+         </mn>
+</mrow>
+<mrow>
+<mn>
+          2
+         </mn>
+</mrow>
+</mfrac>
+<msup>
+<mrow>
+<mi>
+          f
+         </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+          ∗
+         </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mn>
+          2
+         </mn>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mfrac>
+<mrow>
+<mn>
+          1
+         </mn>
+</mrow>
+<mrow>
+<mn>
+          2
+         </mn>
+</mrow>
+</mfrac>
+<msup>
+<mrow>
+<mi>
+          f
+         </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+          ∗
+         </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mn>
+          2
+         </mn>
+<mstyle mathvariant="bold">
+<mi>
+           𝐲
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+<mtr>
+<mtd class="align-odd" columnalign="right"></mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+        =
+       </mo>
+<msup>
+<mrow>
+<mi>
+          f
+         </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+          ∗
+         </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<msup>
+<mrow>
+<mi>
+          f
+         </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+          ∗
+         </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+         (
+        </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐲
+          </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+         )
+        </mo>
+</mrow>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+</mtable>
+</math><!--   l. 63   -->
+<p class="noindent">where the last equality comes from the previous claim on homogeneity of <!--   l. 63   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+</math>.</p></li>
+<li class="itemize"><!--   l. 65   -->
+<p class="noindent"><span class="ecti-1000">(homogeneity II) We have </span><!--   l. 65   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mi>
+       c
+      </mi>
+<mstyle mathvariant="bold">
+<mi>
+        𝐱
+       </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<mi>
+       c
+      </mi>
+<msup>
+<mrow>
+<mi>
+         f
+        </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+         ∗
+        </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mstyle mathvariant="bold">
+<mi>
+        𝐱
+       </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+</mrow>
+</math><span class="ecti-1000">for any </span><!--   l. 65   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       c
+      </mi>
+<mo class="MathClass-rel" stretchy="false">
+       &lt;
+      </mo>
+<mn>
+       0
+      </mn>
+</mrow>
+</math><span class="ecti-1000">.</span><br class="newline"/>
+    Proof. To prove the result for the negative numbers, we consider the special case <!--   l. 66   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       c
+      </mi>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<mo class="MathClass-bin" stretchy="false">
+       −
+      </mo>
+<mn>
+       1
+      </mn>
+</mrow>
+</math>. By homogeneity for non-negative scalars and by the additivity, we obtain <!--   tex4ht:inline   --></p><!--   l. 67   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+      f
+     </mi>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi>
+      f
+     </mi>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mn>
+      2
+     </mn>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi>
+      f
+     </mi>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mn>
+      2
+     </mn>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<mi>
+      f
+     </mi>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mn>
+      2
+     </mn>
+<mi>
+      f
+     </mi>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<mi>
+      f
+     </mi>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mspace class="thickpace" width="0.28em"></mspace>
+<mo class="MathClass-rel" stretchy="false">
+      ⟹
+     </mo>
+<mspace class="thickpace" width="0.28em"></mspace>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mi>
+      f
+     </mi>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi>
+      f
+     </mi>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<mo class="MathClass-bin" stretchy="false">
+      −
+     </mo>
+<mstyle mathvariant="bold">
+<mi>
+       𝐱
+      </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mo class="MathClass-punc" stretchy="false">
+      .
+     </mo>
+</mrow>
+</math><!--   l. 67   -->
+<p class="nopar">Using this, we see that for any <!--   l. 68   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       c
+      </mi>
+<mo class="MathClass-rel" stretchy="false">
+       ∈
+      </mo>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mo class="MathClass-bin" stretchy="false">
+       −
+      </mo>
+<mi>
+       ∞
+      </mi>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<mn>
+       0
+      </mn>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+</mrow>
+</math> it is true that <!--   l. 68   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mi>
+       f
+      </mi>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mo class="MathClass-bin" stretchy="false">
+       −
+      </mo>
+<mi>
+       c
+      </mi>
+<mstyle mathvariant="bold">
+<mi>
+        𝐱
+       </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+<mo class="MathClass-rel" stretchy="false">
+       =
+      </mo>
+<mo class="MathClass-bin" stretchy="false">
+       −
+      </mo>
+<mi mathvariant="italic">
+       𝑐𝑓
+      </mi>
+<mo class="MathClass-open" stretchy="false">
+       (
+      </mo>
+<mstyle mathvariant="bold">
+<mi>
+        𝐱
+       </mi>
+</mstyle>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+</mrow>
+</math>.</p></li>
+<li class="itemize"><!--   l. 70   -->
+<p class="noindent"><span class="ecti-1000">(linearity) We have</span> <!--   tex4ht:inline   --></p><!--   l. 70   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<munderover accent="false" accentunder="false">
+<mrow>
+<mo>
+          ∑
+         </mo>
+</mrow>
+<mrow>
+<mi>
+          i
+         </mi>
+<mo class="MathClass-rel" stretchy="false">
+          =
+         </mo>
+<mn>
+          1
+         </mn>
+</mrow>
+<mrow>
+<mi>
+          k
+         </mi>
+</mrow>
+</munderover>
+<msub>
+<mrow>
+<mi>
+          a
+         </mi>
+</mrow>
+<mrow>
+<mi>
+          i
+         </mi>
+</mrow>
+</msub>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mi>
+          i
+         </mi>
+</mrow>
+</msub>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<munderover accent="false" accentunder="false">
+<mrow>
+<mo>
+        ∑
+       </mo>
+</mrow>
+<mrow>
+<mi>
+        i
+       </mi>
+<mo class="MathClass-rel" stretchy="false">
+        =
+       </mo>
+<mn>
+        1
+       </mn>
+</mrow>
+<mrow>
+<mi>
+        n
+       </mi>
+</mrow>
+</munderover>
+<msub>
+<mrow>
+<mi>
+        a
+       </mi>
+</mrow>
+<mrow>
+<mi>
+        i
+       </mi>
+</mrow>
+</msub>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐱
+          </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mi>
+          i
+         </mi>
+</mrow>
+</msub>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+</mrow>
+</math><!--   l. 70   -->
+<p class="nopar"><span class="ecti-1000">for any </span><!--   l. 70   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub>
+<mrow>
+<mi>
+         a
+        </mi>
+</mrow>
+<mrow>
+<mn>
+         1
+        </mn>
+</mrow>
+</msub>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<mo>
+       …
+      </mo>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<msub>
+<mrow>
+<mi>
+         a
+        </mi>
+</mrow>
+<mrow>
+<mi>
+         n
+        </mi>
+</mrow>
+</msub>
+<mo class="MathClass-rel" stretchy="false">
+       ∈
+      </mo>
+<mo class="MathClass-open" stretchy="false">
+       [
+      </mo>
+<mn>
+       0
+      </mn>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<mo class="MathClass-bin" stretchy="false">
+       +
+      </mo>
+<mi>
+       ∞
+      </mi>
+<mo class="MathClass-close" stretchy="false">
+       )
+      </mo>
+</mrow>
+</math><span class="ecti-1000">and </span><!--   l. 70   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+          𝐱
+         </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mn>
+         1
+        </mn>
+</mrow>
+</msub>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<mo>
+       …
+      </mo>
+<mo class="MathClass-punc" stretchy="false">
+       ,
+      </mo>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+          𝐱
+         </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mi>
+         k
+        </mi>
+</mrow>
+</msub>
+<mo class="MathClass-rel" stretchy="false">
+       ∈
+      </mo>
+<msup>
+<mrow>
+<mi>
+         ℜ
+        </mi>
+</mrow>
+<mrow>
+<mi>
+         n
+        </mi>
+</mrow>
+</msup>
+</mrow>
+</math><span class="ecti-1000">.</span><br class="newline"/>
+    Proof. This follows from homogeneity and pairwise additivity using induction on <!--   l. 71   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mi>
+      k
+     </mi>
+</math>.</p></li>
+</ul><!--   l. 74   -->
+<p class="indent">Now we make use of these properties of <!--   l. 74   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<msup>
+<mrow>
+<mi>
+      f
+     </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+      ∗
+     </mo>
+</mrow>
+</msup>
+</math>. For any <!--   l. 74   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+      𝐱
+     </mi>
+</mstyle>
+<mo class="MathClass-rel" stretchy="false">
+     ∈
+    </mo>
+<msup>
+<mrow>
+<mi>
+       ℜ
+      </mi>
+</mrow>
+<mrow>
+<mi>
+       n
+      </mi>
+</mrow>
+</msup>
+</mrow>
+</math> we make use of linearity to obtain:</p><!--   tex4ht:inline   --><!--   l. 86   -->
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+<mtable class="align-star" columnalign="left" displaystyle="true" rowlines="none none none none none none none none none none none none none none" style="">
+<mtr>
+<mtd class="align-odd" columnalign="right">
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+</mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mn>
+         0
+        </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐱
+        </mi>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+<mtr>
+<mtd class="align-odd" columnalign="right"></mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mn>
+         0
+        </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mrow>
+<mo fence="true" form="prefix">
+         [
+        </mo>
+<mrow>
+<mtable align="axis" class="array" columnlines="none none none none none none none none none" displaystyle="true" equalcolumns="false" equalrows="false" rowlines="none none" style="">
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<msub>
+<mrow>
+<mi>
+               x
+              </mi>
+</mrow>
+<mrow>
+<mn>
+               1
+              </mn>
+</mrow>
+</msub>
+</mtd>
+</mtr>
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<mn>
+             0
+            </mn>
+</mtd>
+</mtr>
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<mi>
+             ⋮
+            </mi>
+</mtd>
+</mtr>
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<mn>
+             0
+            </mn>
+</mtd>
+</mtr> <!--   *\c@MaxMatrixCols c   -->
+</mtable>
+</mrow>
+<mo fence="true" form="postfix">
+         ]
+        </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mrow>
+<mo fence="true" form="prefix">
+         [
+        </mo>
+<mrow>
+<mtable align="axis" class="array" columnlines="none none none none none none none none none" displaystyle="true" equalcolumns="false" equalrows="false" rowlines="none none" style="">
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<mn>
+             0
+            </mn>
+</mtd>
+</mtr>
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<msub>
+<mrow>
+<mi>
+               x
+              </mi>
+</mrow>
+<mrow>
+<mn>
+               2
+              </mn>
+</mrow>
+</msub>
+</mtd>
+</mtr>
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<mi>
+             ⋮
+            </mi>
+</mtd>
+</mtr>
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<mn>
+             0
+            </mn>
+</mtd>
+</mtr> <!--   *\c@MaxMatrixCols c   -->
+</mtable>
+</mrow>
+<mo fence="true" form="postfix">
+         ]
+        </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mo>
+        …
+       </mo>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mrow>
+<mo fence="true" form="prefix">
+         [
+        </mo>
+<mrow>
+<mtable align="axis" class="array" columnlines="none none none none none none none none none" displaystyle="true" equalcolumns="false" equalrows="false" rowlines="none none" style="">
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<mn>
+             0
+            </mn>
+</mtd>
+</mtr>
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<mn>
+             0
+            </mn>
+</mtd>
+</mtr>
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<mi>
+             ⋮
+            </mi>
+</mtd>
+</mtr>
+<mtr class="array-row">
+<mtd class="array-td" columnalign="center">
+<msub>
+<mrow>
+<mi>
+               x
+              </mi>
+</mrow>
+<mrow>
+<mi>
+               n
+              </mi>
+</mrow>
+</msub>
+</mtd>
+</mtr> <!--   *\c@MaxMatrixCols c   -->
+</mtable>
+</mrow>
+<mo fence="true" form="postfix">
+         ]
+        </mo>
+</mrow>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+<mtr>
+<mtd class="align-odd" columnalign="right"></mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mn>
+         0
+        </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<msub>
+<mrow>
+<mi>
+          x
+         </mi>
+</mrow>
+<mrow>
+<mn>
+          1
+         </mn>
+</mrow>
+</msub>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐞
+          </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mn>
+          1
+         </mn>
+</mrow>
+</msub>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<msub>
+<mrow>
+<mi>
+          x
+         </mi>
+</mrow>
+<mrow>
+<mn>
+          2
+         </mn>
+</mrow>
+</msub>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐞
+          </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mn>
+          2
+         </mn>
+</mrow>
+</msub>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<mo>
+        …
+       </mo>
+<mo class="MathClass-bin" stretchy="false">
+        +
+       </mo>
+<msub>
+<mrow>
+<mi>
+          x
+         </mi>
+</mrow>
+<mrow>
+<mi>
+          n
+         </mi>
+</mrow>
+</msub>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+           𝐞
+          </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mi>
+          n
+         </mi>
+</mrow>
+</msub>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+<mtr>
+<mtd class="align-odd" columnalign="right"></mtd>
+<mtd class="align-even">
+<mo class="MathClass-rel" stretchy="false">
+      =
+     </mo>
+<mi>
+      f
+     </mi>
+<mrow>
+<mo fence="true" form="prefix">
+       (
+      </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mn>
+         0
+        </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+       )
+      </mo>
+</mrow>
+<mo class="MathClass-bin" stretchy="false">
+      +
+     </mo>
+<munderover accent="false" accentunder="false">
+<mrow>
+<mo>
+        ∑
+       </mo>
+</mrow>
+<mrow>
+<mi>
+        i
+       </mi>
+<mo class="MathClass-rel" stretchy="false">
+        =
+       </mo>
+<mn>
+        1
+       </mn>
+</mrow>
+<mrow>
+<mi>
+        n
+       </mi>
+</mrow>
+</munderover>
+<msub>
+<mrow>
+<mi>
+        x
+       </mi>
+</mrow>
+<mrow>
+<mi>
+        i
+       </mi>
+</mrow>
+</msub>
+<msup>
+<mrow>
+<mi>
+        f
+       </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+        ∗
+       </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+      (
+     </mo>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+         𝐞
+        </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mi>
+        i
+       </mi>
+</mrow>
+</msub>
+<mo class="MathClass-close" stretchy="false">
+      )
+     </mo>
+<mspace width="2em"></mspace>
+</mtd>
+<mtd class="align-label" columnalign="right"></mtd>
+<mtd class="align-label">
+<mspace width="2em"></mspace>
+</mtd>
+</mtr>
+</mtable>
+</math><!--   l. 87   -->
+<p class="noindent">where <!--   l. 87   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+        𝐞
+       </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mn>
+       1
+      </mn>
+</mrow>
+</msub>
+<mo class="MathClass-punc" stretchy="false">
+     ,
+    </mo>
+<mo>
+     …
+    </mo>
+<mo class="MathClass-punc" stretchy="false">
+     ,
+    </mo>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+        𝐞
+       </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mi>
+       n
+      </mi>
+</mrow>
+</msub>
+</mrow>
+</math> denote the basis vectors of <!--   l. 87   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<msup>
+<mrow>
+<mi>
+      ℜ
+     </mi>
+</mrow>
+<mrow>
+<mi>
+      n
+     </mi>
+</mrow>
+</msup>
+</math>. Setting <!--   l. 87   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub>
+<mrow>
+<mi>
+       a
+      </mi>
+</mrow>
+<mrow>
+<mn>
+       0
+      </mn>
+</mrow>
+</msub>
+<mo class="MathClass-punc" stretchy="false">
+     :
+    </mo>
+<mo class="MathClass-rel" stretchy="false">
+     =
+    </mo>
+<mi>
+     f
+    </mi>
+<mrow>
+<mo fence="true" form="prefix">
+      (
+     </mo>
+<mrow>
+<mstyle mathvariant="bold">
+<mn>
+        0
+       </mn>
+</mstyle>
+</mrow>
+<mo fence="true" form="postfix">
+      )
+     </mo>
+</mrow>
+</mrow>
+</math> and <!--   l. 87   -->
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow>
+<msub>
+<mrow>
+<mi>
+       a
+      </mi>
+</mrow>
+<mrow>
+<mi>
+       i
+      </mi>
+</mrow>
+</msub>
+<mo class="MathClass-punc" stretchy="false">
+     :
+    </mo>
+<mo class="MathClass-rel" stretchy="false">
+     =
+    </mo>
+<msup>
+<mrow>
+<mi>
+       f
+      </mi>
+</mrow>
+<mrow>
+<mo class="MathClass-bin" stretchy="false">
+       ∗
+      </mo>
+</mrow>
+</msup>
+<mo class="MathClass-open" stretchy="false">
+     (
+    </mo>
+<msub>
+<mrow>
+<mstyle mathvariant="bold">
+<mi>
+        𝐞
+       </mi>
+</mstyle>
+</mrow>
+<mrow>
+<mi>
+       i
+      </mi>
+</mrow>
+</msub>
+<mo class="MathClass-close" stretchy="false">
+     )
+    </mo>
+</mrow>
+</math>, we obtain the desired result. □</p>
+</div></div>
+<div class="d-flex align-items-center mt-3">
+<div class="ms-auto"><div class="d-flex align-items-center ms-3 text-muted small">
+<img alt="User profile picture" class="rounded me-2" onerror="this.onerror=null; this.src='/resources/static/img/proxy/user.svg';" src="https://solverer.com/resources/public/images/users/mini/1.webp" style="width:32px; height:32px; object-fit:cover;"/>
+<div>
+<div>
+<a class="fw-semibold text-decoration-none" href="/users/eluthingol">eluthingol</a>
+</div>
+<div class="small">2021-11-07 20:03</div>
+</div>
+</div></div>
+</div>
+<div class="mt-4" id="comments-2570">
+<h6 class="text-muted mb-3">Comments</h6>
+<ul class="list-unstyled mb-0" id="comments-list-2570">
+<li class="mb-2 pb-2 border-bottom" id="comment-4">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">Remark: the part where I prove that $f^*$ is linear is often disregarded - feel free to ignore it if it seems trivial to you.</div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/eluthingol">eluthingol</a> •
+          <span>2022-01-30</span>
+</small>
+</div>
+</div>
+</li>
+<li class="mb-2 pb-2 border-bottom" id="comment-8">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">I begin to self-study this book today and decide to go through the book from cover to cover.  The solution you provided is the best companion in this journey!</div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/plodmatics">plodmatics</a> •
+          <span>2022-04-12</span>
+</small>
+</div>
+</div>
+</li>
+<li class="mb-2 pb-2 border-bottom" id="comment-12">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">@plodmatics happy to hear that!</div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/eluthingol">eluthingol</a> •
+          <span>2022-08-16</span>
+</small>
+</div>
+</div>
+</li>
+<li class="mb-2 pb-2 border-bottom" id="comment-13">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">Thank you! I found this exercise to be somewhat annoying...</div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/rhuq">rhuq</a> •
+          <span>2022-08-26</span>
+</small>
+</div>
+</div>
+</li>
+<li class="mb-2 pb-2 border-bottom" id="comment-14">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">should `` also notice that $\textbf{f}(\textbf{0})$" read ``also notice that $\textbf{f}^*(\textbf{0})$"?</div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/rhuq">rhuq</a> •
+          <span>2022-08-26</span>
+</small>
+</div>
+</div>
+</li>
+<li class="mb-2 pb-2 border-bottom" id="comment-15">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">@rhuq yes, it should be $\mathbf{f}^{*}(\mathbf{0})$. Correction added, thanks.</div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/eluthingol">eluthingol</a> •
+          <span>2022-08-27</span>
+</small>
+</div>
+</div>
+</li>
+<li class="mb-2 pb-2 border-bottom" id="comment-55">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">When proving convexity and concavity for f*, at the end of that section I believe the (1-lambda)f(0) term needs to be negative.</div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/skunktrav">skunktrav</a> •
+          <span>2023-12-27</span>
+</small>
+</div>
+</div>
+</li>
+<li class="mb-2 pb-2 border-bottom" id="comment-220">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">@skunktrav indeed. correction added, thanks.</div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/eluthingol">eluthingol</a> •
+          <span>2025-12-04</span>
+</small>
+</div>
+</div>
+</li>
+</ul>
+<!-- Button to open comment input -->
+<button class="btn btn-sm btn-outline-primary mt-2" data-bs-target="#loginModal" data-bs-toggle="modal" type="button">Comment</button>
+</div>
+</div> <!-- card-body -->
+</div> <!-- card -->
+</div> <!-- col -->
+</div> <!-- row -->
+</div>
+</div>
+<!-- Add Category -->
+<!-- If user is authenticated → open category modal -->
+<!-- If user is NOT authenticated → open login modal -->
+<button class="btn btn-primary" data-bs-target="#loginModal" data-bs-toggle="modal" style="margin-top: 20px;">Add answer</button>
+<div class="modal fade" id="answerModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">
+<span>Add answer</span>
+</h5>
+<button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/solutions" id="answerForm" method="post">
+<input name="canonicalContentId" type="hidden" value="1327"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="errorAlert" role="alert">
+<strong>Error:</strong> <span id="errorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" name="description" placeholder="Problem text in LaTeX…" required="" rows="5"></textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="submitButton" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="submitLoadingButton" style="display:none"><span class="spinner-border spinner-border-sm me-2"></span><span>Creating</span>...</button>
+</div>
+</form>
+</div>
+</div>
+
+</div>
+<div aria-hidden="true" aria-labelledby="editProblemLabel" class="modal fade" id="editProblemModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="editProblemLabel">Edit</h5>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/problems/edit" id="editProblemForm" method="post">
+<input name="problemId" type="hidden" value="1327"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="editProblemErrorAlert" role="alert">
+<strong>Error</strong> <span id="editProblemErrorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3 chapter-selector" data-parent-id="152" data-search-url="/api/content-tags/search">
+<label class="form-label">Chapter</label>
+<input name="chapterTagId" type="hidden" value=""/>
+<input autocomplete="off" class="form-control chapter-select" name="chapter" placeholder="4.1 Differentiation" required="" type="text" value=""/>
+</div>
+<div class="mb-3">
+<label for="editName">Problem name</label>
+<input class="form-control" id="editName" name="name" placeholder="Problem name" required="" type="text" value="Exercise 1.1* (Concave convex functions are affine)"/>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" id="editDescription" name="description" placeholder="Problem text in LaTeX…" required="" rows="5">Suppose that a function $f:\mathbb{R}^n \to \mathbb{R}$ is both concave and convex. Prove that $f$ is an affine function.</textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="editProblemSubmit" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="editProblemSubmitting" style="display:none">
+<span class="spinner-border spinner-border-sm me-2"></span>
+<span>Saving</span>...
+                              </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+
+</main>
+</div>
+</div>
+<div>
+<div aria-hidden="true" aria-labelledby="loginModalLabel" class="modal fade" id="loginModal" role="dialog" tabindex="-1">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<!-- Modal Header -->
+<div class="modal-header">
+<h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<!-- Modal Body with Login Form -->
+<div class="modal-body">
+<form action="/login" method="post">
+<input id="failureRedirect" name="failureRedirect" type="hidden"/>
+<!-- Username Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="username" name="username" placeholder="Email" required="" type="text"/>
+<label for="email">Email</label>
+</div>
+</div>
+<!-- Password Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="password" name="password" placeholder="Password" required="" type="password"/>
+<label for="password">Password</label>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="modal-footer">
+<button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+<button class="btn btn-primary" type="submit">Sign In</button>
+</div>
+</form>
+<div class="d-flex flex-column auth-actions">
+<div><span>Forgot your password?</span> <a href="/auth/password/reset-request">Reset</a></div>
+<div><span>Not a member?</span> <a href="/auth/signup">Sign up</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</main>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-2">
+                <div class="page-number">2</div>
+                <div class="page-header">
+                    <h2 class="page-title">Exercise 1.10 (Production and inventory planning)</h2>
+                    <div class="page-meta">
+                        Source: <a href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-10::152" target="_blank">https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-10::152</a>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <main class="col-12 col-md-8 content pt-4">
+<div class="card">
+<div class="card-body">
+<!-- Breadcrumb -->
+<div>
+<div class="d-none d-lg-block">
+<p>
+<span>
+<a class="external-link" href="https://solverer.com/">Homepage</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions">Solution manuals</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas">Dimitris Bertsimas</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">Introduction to Linear Optimization</a>
+<span aria-label="and then">›</span>
+</span><span>
+<span>Exercise 1.10 (Production and inventory planning)</span>
+</span>
+</p>
+</div>
+<div class="d-lg-none">
+<a aria-label="Back to page: Introduction to Linear Optimization" class="btn btn-link text-decoration-none" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">
+<i class="align-middle" data-feather="arrow-left"></i>
+<span>Introduction to Linear Optimization</span>
+</a>
+</div>
+</div>
+<main>
+<div class="container">
+<div class="row align-items-center mb-5">
+<div class="col-12">
+<h1>Exercise 1.10 (Production and inventory planning)</h1>
+<p>
+<!--  l. 15  --><p class="noindent">A company must deliver <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>d</mi></mrow><mrow><mi>i</mi></mrow></msub></math> units
+of its product at the end of the <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi></math>th
+month. Material produced during a month can be delivered either at
+the end of the same month or can be stored as inventory and delivered
+at the end of a subsequent month; however, there is a storage cost of
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>c</mi></mrow><mrow><mn>1</mn></mrow></msub></math>
+dollars per month for each unit of product held in inventory.
+The year begins with zero inventory. If the company produces
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub></math> units in
+month <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi></math> and
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi><mo class="MathClass-bin">+</mo><mn>1</mn></mrow></msub></math> units in month
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>i</mi> <mo class="MathClass-bin">+</mo> <mn>1</mn></mrow></math>, it incurs
+a cost of <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mrow><mi>c</mi></mrow><mrow><mn>2</mn></mrow></msub><mo class="MathClass-rel">|</mo><msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi><mo class="MathClass-bin">+</mo><mn>1</mn></mrow></msub> <mo class="MathClass-bin">−</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-rel">|</mo></mrow></math>
+dollars, reflecting the cost of switching to a new production level. Formulate a linear
+programming problem whose objective is to minimize the total cost of the
+production and inventory schedule over a period of twelve months. Assume that
+inventory left at the end of the year has no value and does not incur any storage
+costs.
+</p>
+</p>
+</div>
+</div>
+<!-- /*<div th:replace="~{${templateCollection}+'/fragments/items-listings/items-listing-default' :: defaultSubcategories(${subitems})}"></div>*/-->
+<div>
+<div class="row mb-3">
+<div class="col">
+<h2>Answers</h2>
+</div>
+</div>
+<div class="row g-4">
+<div class="col-12">
+<div class="card h-100 flex-row">
+<div class="card-body d-flex flex-column justify-content-between">
+<div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+<!--  l. 22  --><p class="noindent">We have to optimize two parameters: monthly production level
+<!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub></math>,
+<!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn></mrow></math>, and the monthly
+inventory <!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub></math>,
+<!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>2</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn></mrow></math> (January
+inventory <!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>y</mi></mrow><mrow><mn>1</mn></mrow></msub></math>
+is assumed to be zero by assumption).
+</p>
+<figure class="figure" id="-production-scheme">
+<a id="x1-2r1"></a>
+<!--  l. 25  --><p class="noindent"><img alt="PIC" src="/resources/uploads/1/bertsimas_linopt_exercise_1-10.png" style="width:100%">
+</img></p>
+<figcaption class="caption"><span class="id">Figure 1: </span><span class="content">Production scheme.</span></figcaption><!--  tex4ht:label?: x1-2r1   -->
+</figure>
+<!--  l. 29  --><p class="indent">   Our objective is to minimize the combined cost of production changes and the
+inventory storing
+</p><!--  l. 31  --><p class="indent">
+<!--  tex4ht:inline  --></p><!--  l. 31  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<munderover accent="false" accentunder="false"><mrow><mo>∑</mo>
+</mrow><mrow><mi>i</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mn>12</mn></mrow></munderover><msub><mrow><mi>c</mi></mrow><mrow>
+<mn>2</mn></mrow></msub> <mrow><mo fence="true" form="prefix"> |</mo><mrow><msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-bin">−</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi><mo class="MathClass-bin">−</mo><mn>1</mn></mrow></msub></mrow><mo fence="true" form="postfix">|</mo></mrow> <mo class="MathClass-bin">+</mo><munderover accent="false" accentunder="false"><mrow><mo> ∑</mo>
+</mrow><mrow><mi>i</mi><mo class="MathClass-rel">=</mo><mn>2</mn></mrow><mrow><mn>12</mn></mrow></munderover><msub><mrow><mi>c</mi></mrow><mrow>
+<mn>1</mn></mrow></msub><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub>
+</mrow></math>
+<!--  l. 31  --><p class="nopar">
+</p><!--  l. 33  --><p class="indent">   under the condition that the company is obligated to deliver a certain amount
+<!--  l. 33  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>d</mi></mrow><mrow><mi>i</mi></mrow></msub></math> of its
+products each month
+</p><!--  l. 35  --><p class="indent">
+<!--  tex4ht:inline  --></p><!--  l. 35  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mo class="MathClass-open" stretchy="false">(</mo><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-bin">+</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-close" stretchy="false">)</mo> <mo class="MathClass-bin">−</mo> <msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi><mo class="MathClass-bin">+</mo><mn>1</mn></mrow></msub> <mo class="MathClass-rel">=</mo> <msub><mrow><mi>d</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn>
+</mrow></math>
+<!--  l. 35  --><p class="nopar">
+</p><!--  l. 37  --><p class="indent">   and no unit of product can be stored longer than one month
+</p><!--  l. 39  --><p class="indent">
+<!--  tex4ht:inline  --></p><!--  l. 39  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-rel">≤</mo> <msub><mrow><mi>d</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn><mo class="MathClass-punc">.</mo>
+</mrow></math>
+<!--  l. 39  --><p class="nopar">
+</p><!--  l. 41  --><p class="indent">   These conditions result in the following optimization problem: </p><table class="equation-star"><tr><td>
+<!--  l. 42  --><math class="equation" display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mtable align="axis" class="array" columnlines="none none none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>minimize</mtext></mstyle><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><munderover accent="false" accentunder="false"><mrow><mo> ∑</mo>
+</mrow><mrow><mi>i</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mn>12</mn></mrow></munderover><msub><mrow><mi>c</mi></mrow><mrow><mn>2</mn></mrow></msub> <mrow><mo fence="true" form="prefix"> |</mo><mrow><msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-bin">−</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi><mo class="MathClass-bin">−</mo><mn>1</mn></mrow></msub></mrow><mo fence="true" form="postfix">|</mo></mrow> <mo class="MathClass-bin">+</mo><munderover accent="false" accentunder="false"><mrow><mo> ∑</mo>
+</mrow><mrow><mi>i</mi><mo class="MathClass-rel">=</mo><mn>2</mn></mrow><mrow><mn>12</mn></mrow></munderover><msub><mrow><mi>c</mi></mrow><mrow><mn>1</mn></mrow></msub><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub></mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>subject to</mtext></mstyle><mspace class="quad" width="1em"></mspace></mtd><mtd class="array-td" columnalign="left"><mo class="MathClass-open" stretchy="false">(</mo><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-bin">+</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-close" stretchy="false">)</mo> <mo class="MathClass-bin">−</mo> <msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi><mo class="MathClass-bin">+</mo><mn>1</mn></mrow></msub> <mo class="MathClass-rel">=</mo> <msub><mrow><mi>d</mi></mrow><mrow><mi>i</mi></mrow></msub> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-rel">≤</mo> <msub><mrow><mi>d</mi></mrow><mrow><mi>i</mi></mrow></msub> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-punc">,</mo><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-rel">≥</mo> <mn>0</mn> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn><mo class="MathClass-punc">.</mo></mtd></mtr><!--  llll  --></mtable>
+</mrow></math></td></tr></table>
+<!--  l. 52  --><p class="indent">   To convert this into a linear optimization problem, we follow the procedure from
+the <a href="./exercise_1-5">Exercise 1.5</a>: </p><table class="equation-star"><tr><td>
+<!--  l. 53  --><math class="equation" display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mtable align="axis" class="array" columnlines="none none none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>minimize</mtext></mstyle><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><munderover accent="false" accentunder="false"><mrow><mo> ∑</mo>
+</mrow><mrow><mi>i</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mn>12</mn></mrow></munderover><msub><mrow><mi>c</mi></mrow><mrow><mn>2</mn></mrow></msub><msub><mrow><mi>z</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-bin">+</mo><munderover accent="false" accentunder="false"><mrow><mo> ∑</mo>
+</mrow><mrow><mi>i</mi><mo class="MathClass-rel">=</mo><mn>2</mn></mrow><mrow><mn>12</mn></mrow></munderover><msub><mrow><mi>c</mi></mrow><mrow><mn>1</mn></mrow></msub><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub></mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>subject to</mtext></mstyle><mspace class="quad" width="1em"></mspace></mtd><mtd class="array-td" columnalign="left"><mo class="MathClass-open" stretchy="false">(</mo><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-bin">+</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-close" stretchy="false">)</mo> <mo class="MathClass-bin">−</mo> <msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi><mo class="MathClass-bin">+</mo><mn>1</mn></mrow></msub> <mo class="MathClass-rel">=</mo> <msub><mrow><mi>d</mi></mrow><mrow><mi>i</mi></mrow></msub> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-rel">≤</mo> <msub><mrow><mi>d</mi></mrow><mrow><mi>i</mi></mrow></msub> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msub><mrow><mi>z</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-rel">≥</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-bin">−</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi><mo class="MathClass-bin">−</mo><mn>1</mn></mrow></msub> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msub><mrow><mi>z</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-rel">≥</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi><mo class="MathClass-bin">−</mo><mn>1</mn></mrow></msub> <mo class="MathClass-bin">−</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-punc">,</mo><msub><mrow><mi>y</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-punc">,</mo><msub><mrow><mi>z</mi></mrow><mrow><mi>i</mi></mrow></msub> <mo class="MathClass-rel">≥</mo> <mn>0</mn> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn><mo class="MathClass-punc">.</mo></mtd></mtr><!--  llll  --></mtable>
+</mrow></math></td></tr></table>
+</div>
+<div class="d-flex align-items-center mt-3">
+<div class="ms-auto"><div class="d-flex align-items-center ms-3 text-muted small">
+<img alt="User profile picture" class="rounded me-2" onerror="this.onerror=null; this.src='/resources/static/img/proxy/user.svg';" src="https://solverer.com/resources/public/images/users/mini/1.webp" style="width:32px; height:32px; object-fit:cover;"/>
+<div>
+<div>
+<a class="fw-semibold text-decoration-none" href="/users/eluthingol">eluthingol</a>
+</div>
+<div class="small">2022-02-09 23:28</div>
+</div>
+</div></div>
+</div>
+<div class="mt-4" id="comments-2571">
+<h6 class="text-muted mb-3">Comments</h6>
+<ul class="list-unstyled mb-0" id="comments-list-2571">
+</ul>
+<!-- Button to open comment input -->
+<button class="btn btn-sm btn-outline-primary mt-2" data-bs-target="#loginModal" data-bs-toggle="modal" type="button">Comment</button>
+</div>
+</div> <!-- card-body -->
+</div> <!-- card -->
+</div> <!-- col -->
+</div> <!-- row -->
+</div>
+</div>
+<!-- Add Category -->
+<!-- If user is authenticated → open category modal -->
+<!-- If user is NOT authenticated → open login modal -->
+<button class="btn btn-primary" data-bs-target="#loginModal" data-bs-toggle="modal" style="margin-top: 20px;">Add answer</button>
+<div class="modal fade" id="answerModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">
+<span>Add answer</span>
+</h5>
+<button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/solutions" id="answerForm" method="post">
+<input name="canonicalContentId" type="hidden" value="1328"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="errorAlert" role="alert">
+<strong>Error:</strong> <span id="errorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" name="description" placeholder="Problem text in LaTeX…" required="" rows="5"></textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="submitButton" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="submitLoadingButton" style="display:none"><span class="spinner-border spinner-border-sm me-2"></span><span>Creating</span>...</button>
+</div>
+</form>
+</div>
+</div>
+
+</div>
+<div aria-hidden="true" aria-labelledby="editProblemLabel" class="modal fade" id="editProblemModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="editProblemLabel">Edit</h5>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/problems/edit" id="editProblemForm" method="post">
+<input name="problemId" type="hidden" value="1328"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="editProblemErrorAlert" role="alert">
+<strong>Error</strong> <span id="editProblemErrorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3 chapter-selector" data-parent-id="152" data-search-url="/api/content-tags/search">
+<label class="form-label">Chapter</label>
+<input name="chapterTagId" type="hidden" value=""/>
+<input autocomplete="off" class="form-control chapter-select" name="chapter" placeholder="4.1 Differentiation" required="" type="text" value=""/>
+</div>
+<div class="mb-3">
+<label for="editName">Problem name</label>
+<input class="form-control" id="editName" name="name" placeholder="Problem name" required="" type="text" value="Exercise 1.10 (Production and inventory planning)"/>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" id="editDescription" name="description" placeholder="Problem text in LaTeX…" required="" rows="5">A company must de­liver $d_i$ units of its product at the end of the $i$th month. Material produced during a month can be delivered either at the end of the same month or can be stored as inventory and delivered at the end of a subsequent month; however, there is a storage cost of $c_1$ dollars per month for each unit of product held in inventory. The year begins with zero inventory. If the company produces $x_i$ units in month $i$ and $x_{i + 1}$ units in month $i + 1$, it incurs a cost of $c_2 |x_{i + 1} - x_i|$ dollars, reflecting the cost of switching to a new production level. Formulate a linear programming problem whose objective is to minimize the total cost of the production and in­ventory schedule over a period of twelve months. Assume that inventory left at the end of the year has no value and does not incur any storage costs.</textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="editProblemSubmit" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="editProblemSubmitting" style="display:none">
+<span class="spinner-border spinner-border-sm me-2"></span>
+<span>Saving</span>...
+                              </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+
+</main>
+</div>
+</div>
+<div>
+<div aria-hidden="true" aria-labelledby="loginModalLabel" class="modal fade" id="loginModal" role="dialog" tabindex="-1">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<!-- Modal Header -->
+<div class="modal-header">
+<h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<!-- Modal Body with Login Form -->
+<div class="modal-body">
+<form action="/login" method="post">
+<input id="failureRedirect" name="failureRedirect" type="hidden"/>
+<!-- Username Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="username" name="username" placeholder="Email" required="" type="text"/>
+<label for="email">Email</label>
+</div>
+</div>
+<!-- Password Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="password" name="password" placeholder="Password" required="" type="password"/>
+<label for="password">Password</label>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="modal-footer">
+<button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+<button class="btn btn-primary" type="submit">Sign In</button>
+</div>
+</form>
+<div class="d-flex flex-column auth-actions">
+<div><span>Forgot your password?</span> <a href="/auth/password/reset-request">Reset</a></div>
+<div><span>Not a member?</span> <a href="/auth/signup">Sign up</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</main>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-3">
+                <div class="page-number">3</div>
+                <div class="page-header">
+                    <h2 class="page-title">Exercise 1.11 (Optimal currency conversion)</h2>
+                    <div class="page-meta">
+                        Source: <a href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-11::152" target="_blank">https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-11::152</a>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <main class="col-12 col-md-8 content pt-4">
+<div class="card">
+<div class="card-body">
+<!-- Breadcrumb -->
+<div>
+<div class="d-none d-lg-block">
+<p>
+<span>
+<a class="external-link" href="https://solverer.com/">Homepage</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions">Solution manuals</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas">Dimitris Bertsimas</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">Introduction to Linear Optimization</a>
+<span aria-label="and then">›</span>
+</span><span>
+<span>Exercise 1.11 (Optimal currency conversion)</span>
+</span>
+</p>
+</div>
+<div class="d-lg-none">
+<a aria-label="Back to page: Introduction to Linear Optimization" class="btn btn-link text-decoration-none" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">
+<i class="align-middle" data-feather="arrow-left"></i>
+<span>Introduction to Linear Optimization</span>
+</a>
+</div>
+</div>
+<main>
+<div class="container">
+<div class="row align-items-center mb-5">
+<div class="col-12">
+<h1>Exercise 1.11 (Optimal currency conversion)</h1>
+<p>
+<!--  l. 15  --><p class="noindent">Suppose that there are <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>N</mi></math>
+available currencies, and assume that one unit of currency
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi></math> can be exchanged
+for <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>r</mi></mrow><mrow><mi mathvariant="italic">ij</mi></mrow></msub></math> units of currency
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>j</mi></math>. (Naturally, we
+assume that <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mrow><mi>r</mi></mrow><mrow><mi mathvariant="italic">ij</mi></mrow></msub> <mo class="MathClass-rel">&gt;</mo> <mn>0</mn></mrow></math>.)
+There also certain regulations that impose a limit
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>u</mi></mrow><mrow><mi>i</mi></mrow></msub></math> on the total
+amount of currency <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi></math>
+that can be exchanged on any given day. Suppose that we start with
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi></math> units
+of currency 1 and that we would like to maximize the number of units of currency
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>N</mi></math> that we
+end up with at the end of the day, through a sequence of currency transactions. Provide
+a linear programming formulation of this problem. Assume that for any sequence
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mrow><mi>i</mi></mrow><mrow><mn>1</mn></mrow></msub><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><msub><mrow><mi>i</mi></mrow><mrow><mi>k</mi></mrow></msub></mrow></math> of currencies,
+we have <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mrow><mi>r</mi></mrow><mrow><msub><mrow><mi>i</mi></mrow><mrow><mn>1</mn></mrow></msub><msub><mrow><mi>i</mi></mrow><mrow><mn>2</mn></mrow></msub></mrow></msub><msub><mrow><mi>r</mi></mrow><mrow><msub><mrow><mi>i</mi></mrow><mrow><mn>2</mn></mrow></msub><msub><mrow><mi>i</mi></mrow><mrow><mn>3</mn></mrow></msub></mrow></msub><mo class="MathClass-rel">⋯</mo><msub><mrow><mi>r</mi></mrow><mrow><msub><mrow><mi>i</mi></mrow><mrow><mi>k</mi><mo class="MathClass-bin">−</mo><mn>1</mn></mrow></msub><msub><mrow><mi>i</mi></mrow><mrow><mi>k</mi></mrow></msub></mrow></msub><msub><mrow><mi>r</mi></mrow><mrow><msub><mrow><mi>i</mi></mrow><mrow><mi>k</mi></mrow></msub><msub><mrow><mi>i</mi></mrow><mrow><mn>1</mn></mrow></msub></mrow></msub> <mo class="MathClass-rel">≤</mo> <mn>1</mn></mrow></math>,
+which means that wealth cannot be multiplied by going through a cycle of
+currencies.
+</p>
+</p>
+</div>
+</div>
+<!-- /*<div th:replace="~{${templateCollection}+'/fragments/items-listings/items-listing-default' :: defaultSubcategories(${subitems})}"></div>*/-->
+<div>
+<div class="row mb-3">
+<div class="col">
+<h2>Answers</h2>
+</div>
+</div>
+<div class="row g-4">
+<div class="col-12">
+<div class="card h-100 flex-row">
+<div class="card-body d-flex flex-column justify-content-between">
+<div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+<!--  l. 22  --><p class="noindent">We model the amount of currencies exchanged from the currency
+<!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi></math>,
+<!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>N</mi></mrow></math> for a
+currency <!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>j</mi></math>,
+<!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>j</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mn>12</mn></mrow></math>, by
+<!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">ij</mi></mrow></msub></math>.
+Our goal is to maximize the amount of currency in
+<!--  l. 22  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>N</mi></math>
+</p><!--  l. 24  --><p class="indent">
+<!--  tex4ht:inline  --></p><!--  l. 24  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<munderover accent="false" accentunder="false"><mrow><mo>∑</mo>
+</mrow><mrow><mi>j</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>r</mi></mrow><mrow>
+<mi mathvariant="italic">jN</mi></mrow></msub> <mo class="MathClass-bin">⋅</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">jN</mi></mrow></msub>
+</mrow></math>
+<!--  l. 24  --><p class="nopar">
+</p><!--  l. 26  --><p class="indent">   under the condition that current regulations impose a limit
+<!--  l. 26  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>u</mi></mrow><mrow><mi>i</mi></mrow></msub></math> on the total
+amount of currency <!--  l. 26  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi></math>
+that can be exchanged on any given day:
+</p><!--  l. 28  --><p class="indent">
+<!--  tex4ht:inline  --></p><!--  l. 28  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<munderover accent="false" accentunder="false"><mrow><mo>∑</mo>
+</mrow><mrow><mi>j</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>x</mi></mrow><mrow>
+<mi mathvariant="italic">ij</mi></mrow></msub> <mo class="MathClass-rel">≤</mo> <msub><mrow><mi>u</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>N</mi><mo class="MathClass-punc">,</mo>
+</mrow></math>
+<!--  l. 28  --><p class="nopar">
+</p><!--  l. 30  --><p class="indent">   and that we have a starting amount of
+<!--  l. 30  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi></math> currency
+<!--  l. 30  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi></math>:
+</p><!--  l. 32  --><p class="indent">
+<!--  tex4ht:inline  --></p><!--  l. 32  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<munderover accent="false" accentunder="false"><mrow><mo>∑</mo>
+</mrow><mrow><mi>j</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>x</mi></mrow><mrow>
+<mn>1</mn><mi>j</mi></mrow></msub> <mo class="MathClass-rel">≤</mo> <mi>B</mi><mo class="MathClass-punc">.</mo>
+</mrow></math>
+<!--  l. 32  --><p class="nopar">
+</p><!--  l. 34  --><p class="indent">   Obviously, we cannot exchange more currency from
+<!--  l. 34  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi></math> to other currencies
+than we changed to <!--  l. 34  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>i</mi></math>
+before:
+</p><!--  l. 36  --><p class="indent">
+<!--  tex4ht:inline  --></p><!--  l. 36  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<munderover accent="false" accentunder="false"><mrow><mo>∑</mo>
+</mrow><mrow><mi>j</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>r</mi></mrow><mrow>
+<mi mathvariant="italic">ji</mi></mrow></msub><msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">ji</mi></mrow></msub> <mo class="MathClass-rel">≥</mo><munderover accent="false" accentunder="false"><mrow><mo>∑</mo>
+</mrow><mrow><mi>k</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>x</mi></mrow><mrow>
+<mi mathvariant="italic">jk</mi></mrow></msub><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>2</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>N</mi><mo class="MathClass-punc">.</mo>
+</mrow></math>
+<!--  l. 36  --><p class="nopar">
+</p><!--  l. 38  --><p class="indent">   and no currency will be exchanged for currency 1 or from currency N:
+</p><!--  l. 40  --><p class="indent">
+<!--  tex4ht:inline  --></p><!--  l. 40  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi><mn>1</mn></mrow></msub> <mo class="MathClass-rel">=</mo> <mn>0</mn><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace><msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">Ni</mi></mrow></msub> <mo class="MathClass-rel">=</mo> <mn>0</mn><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>N</mi><mo class="MathClass-punc">.</mo>
+</mrow></math>
+<!--  l. 40  --><p class="nopar">
+</p>
+<figure class="figure" id="-conversion-possibilities-for-the-currencies">
+<a id="x1-2r1"></a>
+<!--  l. 44  --><p class="noindent"><img alt="PIC" src="/resources/uploads/1/bertsimas_linopt_exercise_1-11.png" style="width:100%">
+</img></p>
+<figcaption class="caption"><span class="id">Figure 1: </span><span class="content">Conversion possibilities for the currencies.</span></figcaption><!--  tex4ht:label?: x1-2r1   -->
+</figure>
+<!--  l. 48  --><p class="indent">   These conditions result in the following linear optimization problem:
+</p>
+<table class="equation-star"><tr><td>
+<!--  l. 50  --><math class="equation" display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mtable align="axis" class="array" columnlines="none none none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>maximize</mtext></mstyle><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><munderover accent="false" accentunder="false"><mrow><mo> ∑</mo>
+</mrow><mrow><mi>j</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>r</mi></mrow><mrow><mi mathvariant="italic">jN</mi></mrow></msub> <mo class="MathClass-bin">⋅</mo> <msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">jN</mi></mrow></msub> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>subject to</mtext></mstyle><mspace class="quad" width="1em"></mspace></mtd><mtd class="array-td" columnalign="left"><munderover accent="false" accentunder="false"><mrow><mo> ∑</mo>
+</mrow><mrow><mi>j</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">ij</mi></mrow></msub> <mo class="MathClass-rel">≤</mo> <msub><mrow><mi>u</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>N</mi> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><munderover accent="false" accentunder="false"><mrow><mo>∑</mo>
+</mrow><mrow><mi>j</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>x</mi></mrow><mrow><mn>1</mn><mi>j</mi></mrow></msub> <mo class="MathClass-rel">≤</mo> <mi>B</mi> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><munderover accent="false" accentunder="false"><mrow><mo>∑</mo>
+</mrow><mrow><mi>j</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>r</mi></mrow><mrow><mi mathvariant="italic">ji</mi></mrow></msub><msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">ji</mi></mrow></msub> <mo class="MathClass-rel">≥</mo><munderover accent="false" accentunder="false"><mrow><mo>∑</mo>
+</mrow><mrow><mi>k</mi><mo class="MathClass-rel">=</mo><mn>1</mn></mrow><mrow><mi>N</mi></mrow></munderover><msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">jk</mi></mrow></msub><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace></mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>2</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>N</mi> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msub><mrow><mi>x</mi></mrow><mrow><mi>i</mi><mn>1</mn></mrow></msub> <mo class="MathClass-rel">=</mo> <mn>0</mn><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace><msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">Ni</mi></mrow></msub> <mo class="MathClass-rel">=</mo> <mn>0</mn><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>N</mi> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msub><mrow><mi>x</mi></mrow><mrow><mi mathvariant="italic">ij</mi></mrow></msub> <mo class="MathClass-rel">≥</mo> <mn>0</mn><mo class="MathClass-punc">,</mo><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>N</mi><mo class="MathClass-punc">,</mo></mtd><mtd class="array-td" columnalign="left"><mi>j</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>N</mi></mtd></mtr><!--  llll  --></mtable>
+</mrow></math></td></tr></table>
+</div>
+<div class="d-flex align-items-center mt-3">
+<div class="ms-auto"><div class="d-flex align-items-center ms-3 text-muted small">
+<img alt="User profile picture" class="rounded me-2" onerror="this.onerror=null; this.src='/resources/static/img/proxy/user.svg';" src="https://solverer.com/resources/public/images/users/mini/1.webp" style="width:32px; height:32px; object-fit:cover;"/>
+<div>
+<div>
+<a class="fw-semibold text-decoration-none" href="/users/eluthingol">eluthingol</a>
+</div>
+<div class="small">2022-02-10 13:21</div>
+</div>
+</div></div>
+</div>
+<div class="mt-4" id="comments-2572">
+<h6 class="text-muted mb-3">Comments</h6>
+<ul class="list-unstyled mb-0" id="comments-list-2572">
+<li class="mb-2 pb-2 border-bottom" id="comment-48">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">In the third last constraint after the sign greater than equal to there should not be summation (k=1to N) (xik), instead of xjk, because the the currency converted to currency i is more than the currency converted from i to currencey k
+</div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/jfatima">jfatima</a> •
+          <span>2023-11-07</span>
+</small>
+</div>
+</div>
+</li>
+<li class="mb-2 pb-2 border-bottom" id="comment-49">
+<div class="d-flex justify-content-between">
+<div class="me-2 comment-content">Why in objective function, we have xjN, instead of xiN and riN? </div>
+<div>
+<small class="text-muted">
+<a href="https://solverer.com/users/jfatima">jfatima</a> •
+          <span>2023-11-07</span>
+</small>
+</div>
+</div>
+</li>
+</ul>
+<!-- Button to open comment input -->
+<button class="btn btn-sm btn-outline-primary mt-2" data-bs-target="#loginModal" data-bs-toggle="modal" type="button">Comment</button>
+</div>
+</div> <!-- card-body -->
+</div> <!-- card -->
+</div> <!-- col -->
+</div> <!-- row -->
+</div>
+</div>
+<!-- Add Category -->
+<!-- If user is authenticated → open category modal -->
+<!-- If user is NOT authenticated → open login modal -->
+<button class="btn btn-primary" data-bs-target="#loginModal" data-bs-toggle="modal" style="margin-top: 20px;">Add answer</button>
+<div class="modal fade" id="answerModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">
+<span>Add answer</span>
+</h5>
+<button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/solutions" id="answerForm" method="post">
+<input name="canonicalContentId" type="hidden" value="1329"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="errorAlert" role="alert">
+<strong>Error:</strong> <span id="errorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" name="description" placeholder="Problem text in LaTeX…" required="" rows="5"></textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="submitButton" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="submitLoadingButton" style="display:none"><span class="spinner-border spinner-border-sm me-2"></span><span>Creating</span>...</button>
+</div>
+</form>
+</div>
+</div>
+
+</div>
+<div aria-hidden="true" aria-labelledby="editProblemLabel" class="modal fade" id="editProblemModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="editProblemLabel">Edit</h5>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/problems/edit" id="editProblemForm" method="post">
+<input name="problemId" type="hidden" value="1329"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="editProblemErrorAlert" role="alert">
+<strong>Error</strong> <span id="editProblemErrorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3 chapter-selector" data-parent-id="152" data-search-url="/api/content-tags/search">
+<label class="form-label">Chapter</label>
+<input name="chapterTagId" type="hidden" value=""/>
+<input autocomplete="off" class="form-control chapter-select" name="chapter" placeholder="4.1 Differentiation" required="" type="text" value=""/>
+</div>
+<div class="mb-3">
+<label for="editName">Problem name</label>
+<input class="form-control" id="editName" name="name" placeholder="Problem name" required="" type="text" value="Exercise 1.11 (Optimal currency conversion)"/>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" id="editDescription" name="description" placeholder="Problem text in LaTeX…" required="" rows="5">Suppose that there are $N$ available currencies, and assume that one unit of currency $i$ can be exchanged for $r_{i j}$ units of currency $j$. (Naturally, we assume that $r_{i j}&gt;0$.) There also certain regulations that impose a limit $u_{i}$ on the total amount of currency $i$ that can be exchanged on any given day. Suppose that we start with $B$ units of currency 1 and that we would like to maximize the number of units of currency $N$ that we end up with at the end of the day, through a sequence of currency transactions. Provide a linear programming formulation of this problem. Assume that for any sequence $i_{1}, \ldots, i_{k}$ of currencies, we have $r_{i_{1} i_{2}} r_{i_{2} i_{3}} \cdots r_{i_{k-1} i_{k}} r_{i_{k} i_{1}} \leq 1$, which means that wealth cannot be multiplied by going through a cycle of currencies.</textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="editProblemSubmit" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="editProblemSubmitting" style="display:none">
+<span class="spinner-border spinner-border-sm me-2"></span>
+<span>Saving</span>...
+                              </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+
+</main>
+</div>
+</div>
+<div>
+<div aria-hidden="true" aria-labelledby="loginModalLabel" class="modal fade" id="loginModal" role="dialog" tabindex="-1">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<!-- Modal Header -->
+<div class="modal-header">
+<h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<!-- Modal Body with Login Form -->
+<div class="modal-body">
+<form action="/login" method="post">
+<input id="failureRedirect" name="failureRedirect" type="hidden"/>
+<!-- Username Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="username" name="username" placeholder="Email" required="" type="text"/>
+<label for="email">Email</label>
+</div>
+</div>
+<!-- Password Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="password" name="password" placeholder="Password" required="" type="password"/>
+<label for="password">Password</label>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="modal-footer">
+<button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+<button class="btn btn-primary" type="submit">Sign In</button>
+</div>
+</form>
+<div class="d-flex flex-column auth-actions">
+<div><span>Forgot your password?</span> <a href="/auth/password/reset-request">Reset</a></div>
+<div><span>Not a member?</span> <a href="/auth/signup">Sign up</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</main>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-4">
+                <div class="page-number">4</div>
+                <div class="page-header">
+                    <h2 class="page-title">Exercise 1.12 (Chebychev center)</h2>
+                    <div class="page-meta">
+                        Source: <a href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-12::152" target="_blank">https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-12::152</a>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <main class="col-12 col-md-8 content pt-4">
+<div class="card">
+<div class="card-body">
+<!-- Breadcrumb -->
+<div>
+<div class="d-none d-lg-block">
+<p>
+<span>
+<a class="external-link" href="https://solverer.com/">Homepage</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions">Solution manuals</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas">Dimitris Bertsimas</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">Introduction to Linear Optimization</a>
+<span aria-label="and then">›</span>
+</span><span>
+<span>Exercise 1.12 (Chebychev center)</span>
+</span>
+</p>
+</div>
+<div class="d-lg-none">
+<a aria-label="Back to page: Introduction to Linear Optimization" class="btn btn-link text-decoration-none" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">
+<i class="align-middle" data-feather="arrow-left"></i>
+<span>Introduction to Linear Optimization</span>
+</a>
+</div>
+</div>
+<main>
+<div class="container">
+<div class="row align-items-center mb-5">
+<div class="col-12">
+<h1>Exercise 1.12 (Chebychev center)</h1>
+<p>
+<!--  l. 15  --><p class="noindent">Consider a set <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>P</mi></math>
+described by linear inequality constraints, that is,
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi> <mo class="MathClass-rel">=</mo> <mrow><mo fence="true" form="prefix"> {</mo><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-rel">∈</mo><msup><mrow><mi>ℜ</mi></mrow><mrow><mi>n</mi></mrow></msup><mo class="MathClass-rel">∣</mo><msubsup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>i</mi></mrow><mrow><mi>′</mi></mrow></msubsup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-rel">≤</mo> <msub><mrow><mi>b</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-punc">,</mo><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>m</mi></mrow><mo fence="true" form="postfix">}</mo></mrow></mrow></math>. A ball with
+center <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mstyle mathvariant="bold"><mi>y</mi></mstyle></math>
+and radius <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi></math>
+is defined as the set of all points within (Euclidean) distance
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi></math> from
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mstyle mathvariant="bold"><mi>y</mi></mstyle></math>. We are
+interested in finding a ball with the largest possible radius, which is entirely contained within
+the set <!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>P</mi></math>.
+(The center of such a ball is called the <a href="https://en.wikipedia.org/wiki/Chebyshev_center">Chebychev center</a> of
+<!--  l. 15  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>P</mi></math>.)
+Provide a linear programming formulation of this problem.
+</p>
+</p>
+</div>
+</div>
+<!-- /*<div th:replace="~{${templateCollection}+'/fragments/items-listings/items-listing-default' :: defaultSubcategories(${subitems})}"></div>*/-->
+<div>
+<div class="row mb-3">
+<div class="col">
+<h2>Answers</h2>
+</div>
+</div>
+<div class="row g-4">
+<div class="col-12">
+<div class="card h-100 flex-row">
+<div class="card-body d-flex flex-column justify-content-between">
+<div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+<!--  l. 22  --><p class="noindent">Practically, we are looking at the following optimization problem
+</p>
+<table class="equation"><tr><td>
+<!--  l. 24  --><p class="indent">
+</p><!--  l. 24  --><math class="equation" display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mstyle class="label" id="x1-2r1"></mstyle><!--  endlabel  --> <mtable align="axis" class="array" columnlines="none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>maximize</mtext></mstyle><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><mi>r</mi> </mtd></mtr><mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>subject to</mtext></mstyle><mspace class="quad" width="1em"></mspace></mtd><mtd class="array-td" columnalign="left"><mi>B</mi><mo class="MathClass-open" stretchy="false">(</mo><mstyle mathvariant="bold"><mi>x</mi> </mstyle> <mo class="MathClass-punc">,</mo> <mi>r</mi><mo class="MathClass-close" stretchy="false">)</mo> <mo class="MathClass-rel">⊆</mo> <mi>P</mi><mo class="MathClass-punc">.</mo></mtd></mtr><!--  ll  --></mtable>
+</mrow></math></td><td class="eq-no">(1)</td></tr></table>
+<!--  l. 31  --><p class="indent">   (This may look weird at first glance, as we are optimizing over variables
+<!--  l. 31  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi></math> and
+<!--  l. 31  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mstyle mathvariant="bold"><mi>x</mi></mstyle></math>, and the latter
+has the coefficient equal to zero in the cost function.) This formulation is not quite linear; we try
+to formulate <!--  l. 31  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo class="MathClass-open" stretchy="false">(</mo><mstyle mathvariant="bold"><mi>x</mi></mstyle><mo class="MathClass-punc">,</mo><mi>r</mi><mo class="MathClass-close" stretchy="false">)</mo> <mo class="MathClass-rel">⊆</mo> <mi>P</mi></mrow></math>
+using the language of linear constraints.
+</p>
+<ul class="itemize1">
+<li class="itemize">
+<!--  l. 34  --><p class="noindent">First, we consider a simpler problem of reformulating <!--  l. 34  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo class="MathClass-open" stretchy="false">(</mo><mstyle mathvariant="bold"><mi>x</mi></mstyle><mo class="MathClass-punc">,</mo><mi>r</mi><mo class="MathClass-close" stretchy="false">)</mo> <mo class="MathClass-rel">⊆</mo><mo class="MathClass-open" stretchy="false">{</mo><msup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mi>b</mi></mstyle><mo class="MathClass-close" stretchy="false">}</mo></mrow></math>
+     - i.e., our polyhedron only has one restriction and is thus a hyperplane.
+     Notice that we can write
+     <!--  tex4ht:inline  --></p><!--  l. 35  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mi>B</mi> <mrow><mo fence="true" form="prefix"> (</mo><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle><mo class="MathClass-punc">,</mo><mi>r</mi></mrow><mo fence="true" form="postfix">)</mo></mrow> <mo class="MathClass-rel">=</mo> <mrow><mo fence="true" form="prefix"> {</mo><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mstyle mathvariant="bold"><mi>v</mi></mstyle><mo class="MathClass-rel">∣</mo><mo class="MathClass-rel">∥</mo><mi>v</mi><mo class="MathClass-rel">∥</mo> <mo class="MathClass-rel">=</mo> <mi>r</mi></mrow><mo fence="true" form="postfix">}</mo></mrow><mo class="MathClass-punc">.</mo>
+</mrow></math>
+<!--  l. 35  --><p class="nopar"> Using this, we obtain
+                                                                  
+
+                                                                  
+</p>
+<table class="equation-star"><tr><td>
+<!--  l. 38  --><math class="equation" display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mtable align="axis" class="array" columnlines="none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr class="array-row"><mtd class="array-td" columnalign="left"></mtd><mtd class="array-td" columnalign="left"><mi>B</mi> <mrow><mo fence="true" form="prefix"> (</mo><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle><mo class="MathClass-punc">,</mo><mi>r</mi></mrow><mo fence="true" form="postfix">)</mo></mrow> <mo class="MathClass-rel">⊆</mo><mo class="MathClass-open" stretchy="false">{</mo><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-rel">∈</mo><msup><mrow><mi>ℜ</mi></mrow><mrow><mi>n</mi></mrow></msup><mo class="MathClass-rel">∣</mo><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-rel">∈</mo><msup><mrow> <mi>ℜ</mi></mrow><mrow><mi>n</mi></mrow></msup><mo class="MathClass-rel">∣</mo><msup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mi>b</mi></mstyle><mo class="MathClass-close" stretchy="false">}</mo></mtd>
+</mtr><mtr class="array-vspace" style="font-size:5.0pt"></mtr><mtr class="array-row"><mtd class="array-td" columnalign="left"></mtd><mtd class="array-td" columnalign="left"><mspace class="thickpace" width="0.28em"></mspace><mo class="MathClass-rel">⟺</mo><mspace class="thickpace" width="0.28em"></mspace><mi class="MathClass-op">∀</mi><mo> ⁡<!--  FUNCTION APPLICATION  --></mo><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-rel">∈</mo> <mi>B</mi> <mrow><mo fence="true" form="prefix"> (</mo><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle><mo class="MathClass-punc">,</mo><mi>r</mi></mrow><mo fence="true" form="postfix">)</mo></mrow> <mo class="MathClass-punc">:</mo> <mspace class="quad" width="1em"></mspace><msup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mi>b</mi></mstyle> </mtd>
+</mtr> <mtr class="array-vspace" style="font-size:5.0pt"></mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"></mtd><mtd class="array-td" columnalign="left"><mspace class="thickpace" width="0.28em"></mspace><mo class="MathClass-rel">⟺</mo><mspace class="thickpace" width="0.28em"></mspace><mi class="MathClass-op">∀</mi><mo> ⁡<!--  FUNCTION APPLICATION  --></mo><mstyle mathvariant="bold"><mi>v</mi></mstyle> <mo class="MathClass-rel">∈</mo> <msup><mrow><mi>ℜ</mi></mrow><mrow><mi>n</mi></mrow></msup><mo class="MathClass-punc">,</mo><mspace class="nbsp" width="0.33em"></mspace><mo class="MathClass-rel">∥</mo><mi>v</mi><mo class="MathClass-rel">∥</mo> <mo class="MathClass-rel">=</mo> <mi>r</mi> <mo class="MathClass-punc">:</mo> <mspace class="quad" width="1em"></mspace><msup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mrow><mo fence="true" form="prefix"> (</mo><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mstyle mathvariant="bold"><mi>v</mi></mstyle></mrow><mo fence="true" form="postfix">)</mo></mrow> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mi>b</mi></mstyle> </mtd>
+</mtr> <mtr class="array-vspace" style="font-size:5.0pt"></mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"></mtd><mtd class="array-td" columnalign="left"><mspace class="thickpace" width="0.28em"></mspace><mo class="MathClass-rel">⟺</mo><mspace class="thickpace" width="0.28em"></mspace><munder class="msub"><mrow><mi class="qopname">sup</mi><mo> ⁡<!--  FUNCTION APPLICATION  --> </mo></mrow><mrow><mo class="MathClass-open" stretchy="false">{</mo><mstyle mathvariant="bold"><mi>v</mi></mstyle><mo class="MathClass-rel">∈</mo><msup><mrow><mi>ℜ</mi></mrow><mrow><mi>n</mi></mrow></msup><mo class="MathClass-punc">,</mo><mspace class="nbsp" width="0.33em"></mspace><mo class="MathClass-rel">∥</mo><mi>v</mi><mo class="MathClass-rel">∥</mo><mo class="MathClass-rel">=</mo><mi>r</mi><mo class="MathClass-close" stretchy="false">}</mo></mrow></munder><msup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mrow><mo fence="true" form="prefix"> (</mo><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mstyle mathvariant="bold"><mi>v</mi></mstyle></mrow><mo fence="true" form="postfix">)</mo></mrow> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mi>b</mi></mstyle> </mtd>
+</mtr> <mtr class="array-vspace" style="font-size:5.0pt"></mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"></mtd><mtd class="array-td" columnalign="left"><mspace class="thickpace" width="0.28em"></mspace><mo class="MathClass-rel">⟺</mo><mspace class="thickpace" width="0.28em"></mspace><msup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo><munder class="msub"><mrow><mi class="qopname"> sup</mi><mo> ⁡<!--  FUNCTION APPLICATION  --> </mo></mrow><mrow><mo class="MathClass-open" stretchy="false">{</mo><mstyle mathvariant="bold"><mi>v</mi></mstyle><mo class="MathClass-rel">∈</mo><msup><mrow><mi>ℜ</mi></mrow><mrow><mi>n</mi></mrow></msup><mo class="MathClass-punc">,</mo><mspace class="nbsp" width="0.33em"></mspace><mo class="MathClass-rel">∥</mo><mi>v</mi><mo class="MathClass-rel">∥</mo><mo class="MathClass-rel">=</mo><mi>r</mi><mo class="MathClass-close" stretchy="false">}</mo></mrow></munder><msup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>v</mi></mstyle> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mi>b</mi></mstyle> </mtd>
+</mtr> <mtr class="array-vspace" style="font-size:5.0pt"></mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"></mtd><mtd class="array-td" columnalign="left"><mspace class="thickpace" width="0.28em"></mspace><mo class="MathClass-rel">⟺</mo><mspace class="thickpace" width="0.28em"></mspace><msup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mo class="MathClass-rel">∥</mo><mi>a</mi><mo class="MathClass-rel">∥</mo><mi>r</mi> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mi>b</mi></mstyle> </mtd></mtr><!--  ll  --></mtable>
+</mrow></math></td></tr></table>
+<!--  l. 48  --><p class="noindent">where in the last step we have used the Cauchy-Schwarz inequality.
+     </p></li>
+<li class="itemize">
+<!--  l. 50  --><p class="noindent">Now consider the constraint <!--  l. 50  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo class="MathClass-open" stretchy="false">(</mo><mstyle mathvariant="bold"><mi>x</mi></mstyle><mo class="MathClass-punc">,</mo><mi>r</mi><mo class="MathClass-close" stretchy="false">)</mo> <mo class="MathClass-rel">⊆</mo> <mrow><mo fence="true" form="prefix"> {</mo><mrow><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-rel">∈</mo><msup><mrow><mi>ℜ</mi></mrow><mrow><mi>n</mi></mrow></msup><mo class="MathClass-rel">∣</mo><msubsup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>i</mi></mrow><mrow><mi>′</mi></mrow></msubsup><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-rel">≤</mo> <msub><mrow><mi>b</mi></mrow><mrow><mi>i</mi></mrow></msub><mo class="MathClass-punc">,</mo><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>m</mi></mrow><mo fence="true" form="postfix">}</mo></mrow></mrow></math>.
+     Repeating the steps above, we obtain an equivalent formulation
+     <!--  tex4ht:inline  --></p><!--  l. 51  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msubsup><mrow>
+<mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>i</mi></mrow><mrow><mi>′</mi></mrow></msubsup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mo class="MathClass-rel">∥</mo><msub><mrow><mi>a</mi></mrow><mrow>
+<mi>i</mi></mrow></msub><mo class="MathClass-rel">∥</mo><mi>r</mi> <mo class="MathClass-rel">≤</mo><msub><mrow><mstyle mathvariant="bold"><mi>b</mi></mstyle></mrow><mrow><mi>i</mi></mrow></msub><mspace class="quad" width="1em"></mspace><mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo><mo>…</mo><mo class="MathClass-punc">,</mo><mi>m</mi><mo class="MathClass-punc">.</mo>
+</mrow></math>
+<!--  l. 51  --><p class="nopar"></p></li></ul>
+<!--  l. 54  --><p class="indent">   Rewriting the constraints as explained above, we obtain a linear optimization
+problem
+</p>
+<table class="equation"><tr><td>
+<!--  l. 56  --><p class="indent">
+</p><!--  l. 56  --><math class="equation" display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mstyle class="label" id="x1-3r2"></mstyle><!--  endlabel  --> <mtable align="axis" class="array" columnlines="none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>maximize</mtext></mstyle><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><mi>r</mi> </mtd></mtr><mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>subject to</mtext></mstyle><mspace class="quad" width="1em"></mspace></mtd><mtd class="array-td" columnalign="left"><msubsup><mrow><mstyle mathvariant="bold"><mi>a</mi></mstyle></mrow><mrow><mi>i</mi></mrow><mrow><mi>′</mi></mrow></msubsup><mstyle mathvariant="bold"><mi>x</mi></mstyle><mo class="MathClass-bin">+</mo> <mo class="MathClass-rel">∥</mo><msub><mrow><mi>a</mi></mrow><mrow><mi>i</mi> </mrow> </msub> <mo class="MathClass-rel">∥</mo><mi>r</mi> <mo class="MathClass-rel">≤</mo><msub><mrow> <mstyle mathvariant="bold"> <mi>b</mi></mstyle> </mrow><mrow><mi>i</mi> </mrow> </msub> <mspace class="quad" width="1em"></mspace> <mi>i</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn><mo class="MathClass-punc">,</mo> <mo>…</mo> <mo class="MathClass-punc">,</mo> <mi>m</mi><mo class="MathClass-punc">.</mo></mtd></mtr><!--  ll  --></mtable>
+</mrow></math></td><td class="eq-no">(2)</td></tr></table>
+</div>
+<div class="d-flex align-items-center mt-3">
+<div class="ms-auto"><div class="d-flex align-items-center ms-3 text-muted small">
+<img alt="User profile picture" class="rounded me-2" onerror="this.onerror=null; this.src='/resources/static/img/proxy/user.svg';" src="https://solverer.com/resources/public/images/users/mini/1.webp" style="width:32px; height:32px; object-fit:cover;"/>
+<div>
+<div>
+<a class="fw-semibold text-decoration-none" href="/users/eluthingol">eluthingol</a>
+</div>
+<div class="small">2022-02-10 16:33</div>
+</div>
+</div></div>
+</div>
+<div class="mt-4" id="comments-2573">
+<h6 class="text-muted mb-3">Comments</h6>
+<ul class="list-unstyled mb-0" id="comments-list-2573">
+</ul>
+<!-- Button to open comment input -->
+<button class="btn btn-sm btn-outline-primary mt-2" data-bs-target="#loginModal" data-bs-toggle="modal" type="button">Comment</button>
+</div>
+</div> <!-- card-body -->
+</div> <!-- card -->
+</div> <!-- col -->
+</div> <!-- row -->
+</div>
+</div>
+<!-- Add Category -->
+<!-- If user is authenticated → open category modal -->
+<!-- If user is NOT authenticated → open login modal -->
+<button class="btn btn-primary" data-bs-target="#loginModal" data-bs-toggle="modal" style="margin-top: 20px;">Add answer</button>
+<div class="modal fade" id="answerModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">
+<span>Add answer</span>
+</h5>
+<button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/solutions" id="answerForm" method="post">
+<input name="canonicalContentId" type="hidden" value="1330"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="errorAlert" role="alert">
+<strong>Error:</strong> <span id="errorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" name="description" placeholder="Problem text in LaTeX…" required="" rows="5"></textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="submitButton" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="submitLoadingButton" style="display:none"><span class="spinner-border spinner-border-sm me-2"></span><span>Creating</span>...</button>
+</div>
+</form>
+</div>
+</div>
+
+</div>
+<div aria-hidden="true" aria-labelledby="editProblemLabel" class="modal fade" id="editProblemModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="editProblemLabel">Edit</h5>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/problems/edit" id="editProblemForm" method="post">
+<input name="problemId" type="hidden" value="1330"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="editProblemErrorAlert" role="alert">
+<strong>Error</strong> <span id="editProblemErrorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3 chapter-selector" data-parent-id="152" data-search-url="/api/content-tags/search">
+<label class="form-label">Chapter</label>
+<input name="chapterTagId" type="hidden" value=""/>
+<input autocomplete="off" class="form-control chapter-select" name="chapter" placeholder="4.1 Differentiation" required="" type="text" value=""/>
+</div>
+<div class="mb-3">
+<label for="editName">Problem name</label>
+<input class="form-control" id="editName" name="name" placeholder="Problem name" required="" type="text" value="Exercise 1.12 (Chebychev center)"/>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" id="editDescription" name="description" placeholder="Problem text in LaTeX…" required="" rows="5">Consider a set $P$ described by linear inequality constraints, that is, $P=\left\{\mathbf{x} \in \Re^{n} \mid \mathbf{a}_{i}^{\prime} \mathbf{x} \leq b_{i}, i=1, \ldots, m\right\}$. A ball with center $\mathbf{y}$ and radius $r$ is defined as the set of all points within (Euclidean) distance $r$ from $\mathbf{y}$. We are interested in finding a ball with the largest possible radius, which is entirely contained within the set $P$. (The center of such a ball is called the \href{https://en.wikipedia.org/wiki/Chebyshev_center}{Chebychev center} of $P$.) Provide a linear programming formulation of this problem.</textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="editProblemSubmit" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="editProblemSubmitting" style="display:none">
+<span class="spinner-border spinner-border-sm me-2"></span>
+<span>Saving</span>...
+                              </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+
+</main>
+</div>
+</div>
+<div>
+<div aria-hidden="true" aria-labelledby="loginModalLabel" class="modal fade" id="loginModal" role="dialog" tabindex="-1">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<!-- Modal Header -->
+<div class="modal-header">
+<h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<!-- Modal Body with Login Form -->
+<div class="modal-body">
+<form action="/login" method="post">
+<input id="failureRedirect" name="failureRedirect" type="hidden"/>
+<!-- Username Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="username" name="username" placeholder="Email" required="" type="text"/>
+<label for="email">Email</label>
+</div>
+</div>
+<!-- Password Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="password" name="password" placeholder="Password" required="" type="password"/>
+<label for="password">Password</label>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="modal-footer">
+<button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+<button class="btn btn-primary" type="submit">Sign In</button>
+</div>
+</form>
+<div class="d-flex flex-column auth-actions">
+<div><span>Forgot your password?</span> <a href="/auth/password/reset-request">Reset</a></div>
+<div><span>Not a member?</span> <a href="/auth/signup">Sign up</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</main>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-5">
+                <div class="page-number">5</div>
+                <div class="page-header">
+                    <h2 class="page-title">Exercise 1.13 (Linear fractional programming)</h2>
+                    <div class="page-meta">
+                        Source: <a href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-13::152" target="_blank">https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization/exercise-1-13::152</a>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <main class="col-12 col-md-8 content pt-4">
+<div class="card">
+<div class="card-body">
+<!-- Breadcrumb -->
+<div>
+<div class="d-none d-lg-block">
+<p>
+<span>
+<a class="external-link" href="https://solverer.com/">Homepage</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions">Solution manuals</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas">Dimitris Bertsimas</a>
+<span aria-label="and then">›</span>
+</span><span>
+<a class="external-link" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">Introduction to Linear Optimization</a>
+<span aria-label="and then">›</span>
+</span><span>
+<span>Exercise 1.13 (Linear fractional programming)</span>
+</span>
+</p>
+</div>
+<div class="d-lg-none">
+<a aria-label="Back to page: Introduction to Linear Optimization" class="btn btn-link text-decoration-none" href="https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization">
+<i class="align-middle" data-feather="arrow-left"></i>
+<span>Introduction to Linear Optimization</span>
+</a>
+</div>
+</div>
+<main>
+<div class="container">
+<div class="row align-items-center mb-5">
+<div class="col-12">
+<h1>Exercise 1.13 (Linear fractional programming)</h1>
+<p>
+<!--  l. 15  --><p class="noindent">Consider the problem
+<!--  tex4ht:inline  --></p><!--  l. 16  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mtable align="axis" class="array" columnlines="none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr><mtd class="array" columnalign="center"> <mstyle class="text"><mtext> minimize </mtext></mstyle> </mtd><mtd class="array" columnalign="left"><mfrac><mrow><msup><mrow><mstyle mathvariant="bold"><mi>c</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>d</mi></mrow>
+<mrow><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>g</mi></mrow></mfrac> </mtd>
+</mtr> <mtr><mtd class="array" columnalign="center"><mstyle class="text"><mtext> subject to </mtext></mstyle></mtd><mtd class="array" columnalign="left"><mstyle mathvariant="bold"><mi>Ax</mi></mstyle> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mi>b</mi></mstyle> </mtd>
+</mtr> <mtr><mtd class="array" columnalign="center"> </mtd><mtd class="array" columnalign="left"><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>g</mi> <mo class="MathClass-rel">&gt;</mo> <mn>0</mn></mtd></mtr><!--  cl  --></mtable>
+</mrow></math>
+<!--  l. 22  --><p class="nopar"> Suppose that we have some prior knowledge that the optimal cost belongs to an interval
+<!--  l. 23  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo class="MathClass-open" stretchy="false">[</mo><mi>K</mi><mo class="MathClass-punc">,</mo><mi>L</mi><mo class="MathClass-close" stretchy="false">]</mo></mrow></math>.
+Provide a procedure, that uses linear programming as a subroutine, and that allows
+us to compute the optimal cost within any desired accuracy. Hint: Consider the
+problem of deciding whether the optimal cost is less than or equal to a certain
+number.
+</p>
+</p>
+</div>
+</div>
+<!-- /*<div th:replace="~{${templateCollection}+'/fragments/items-listings/items-listing-default' :: defaultSubcategories(${subitems})}"></div>*/-->
+<div>
+<div class="row mb-3">
+<div class="col">
+<h2>Answers</h2>
+</div>
+</div>
+<div class="row g-4">
+<div class="col-12">
+<div class="card h-100 flex-row">
+<div class="card-body d-flex flex-column justify-content-between">
+<div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+<!--   l. 25   --><p class="noindent">Consider the problem of deciding whether the optimal cost is less than or equal to a certain
+threshold <!--   l. 25   --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>α</mi> <mo class="MathClass-rel">∈</mo> <mo class="MathClass-open" stretchy="false">[</mo><mi>K</mi><mo class="MathClass-punc">,</mo><mi>L</mi><mo class="MathClass-close" stretchy="false">]</mo></mrow></math>:
+</p><!--   l. 27   --><p class="indent">
+<!--   tex4ht:inline   --></p><!--   l. 27   --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><msup><mrow>
+<mstyle mathvariant="bold"><mi>c</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>d</mi></mrow>
+<mrow><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>g</mi></mrow></mfrac> <mo class="MathClass-rel">≤</mo> <mi>α</mi><mo class="MathClass-punc">.</mo>
+</mrow></math>
+<!--   l. 27   --><p class="nopar">
+</p><!--   l. 29   --><p class="indent">   Naturally, we want to find out how low we can take
+<!--   l. 29   --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>α</mi></math>:
+</p>
+<table class="equation-star"><tr><td>
+<!--   l. 31   --><math class="equation" display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mtable align="axis" class="array" columnlines="none none none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>minimize</mtext></mstyle><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><mi>α</mi> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>subject to</mtext></mstyle><mspace class="quad" width="1em"></mspace></mtd><mtd class="array-td" columnalign="left"><msup><mrow><mstyle mathvariant="bold"><mi>c</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>d</mi> <mo class="MathClass-rel">≤</mo> <mi>α</mi><mo class="MathClass-open" stretchy="false">(</mo><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>g</mi><mo class="MathClass-close" stretchy="false">)</mo></mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><mstyle mathvariant="bold"><mi>Ax</mi></mstyle> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mi>b</mi></mstyle> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>g</mi> <mo class="MathClass-rel">&gt;</mo> <mn>0</mn> </mtd></mtr><!--   llll   --></mtable>
+</mrow></math></td></tr></table>
+<!--   l. 41   --><p class="indent">   We can implement the following search algorithm by fixing
+<!--   l. 41   --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mi>α</mi></math> lower
+and lower at each iteration and checking whether the feasible set of the above
+optimization problem is nonempty:
+</p><!--   l. 43   --><p class="indent">
+<!--   tex4ht:inline   --></p><!--   l. 43   --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mrow><mo fence="true" form="prefix"> [</mo><mrow><mtable align="axis" class="array" columnlines="none none none none none none none none none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr class="array-row"><mtd class="array-td" columnalign="center"><msup><mrow><mstyle mathvariant="bold"><mi>c</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mo class="MathClass-bin">−</mo> <mi>α</mi><mstyle mathvariant="bold"><mi>f</mi></mstyle></mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="center"> <mstyle mathvariant="bold"><mi>A</mi></mstyle> </mtd></mtr> <mtr class="array-row"><mtd class="array-td" columnalign="center"> <mo class="MathClass-bin">−</mo><mstyle mathvariant="bold"><mi>f</mi></mstyle></mtd>
+</mtr> <!--   *\c@MaxMatrixCols c   --></mtable> </mrow><mo fence="true" form="postfix">]</mo></mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-rel">≤</mo> <mrow><mo fence="true" form="prefix"> [</mo><mrow><mtable align="axis" class="array" columnlines="none none none none none none none none none" displaystyle="true" equalcolumns="false" equalrows="false" style=""><mtr class="array-row"><mtd class="array-td" columnalign="center"><mi mathvariant="italic">αg</mi> <mo class="MathClass-bin">−</mo> <mi>d</mi></mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="center"> <mstyle mathvariant="bold"><mi>b</mi></mstyle> </mtd></mtr> <mtr class="array-row"><mtd class="array-td" columnalign="center"> <mi>g</mi></mtd></mtr> <!--   *\c@MaxMatrixCols c   --></mtable> </mrow><mo fence="true" form="postfix">]</mo></mrow><mo class="MathClass-punc">.</mo>
+</mrow></math>
+<!--   l. 43   --><p class="nopar">
+</p><!--   l. 45   --><p class="indent">   Fix a desired accuracy <!--   l. 45   --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>𝜖</mi> <mo class="MathClass-rel">&gt;</mo> <mn>0</mn></mrow></math>
+after which the algorithm should stop. At each step, we will narrow down the interval
+<!--   l. 45   --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mrow><mi>α</mi></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup><mo class="MathClass-rel">∈</mo> <mo class="MathClass-open" stretchy="false">[</mo><mi>K</mi><mo class="MathClass-punc">,</mo><mi>L</mi><mo class="MathClass-close" stretchy="false">]</mo></mrow></math> to a smaller
+interval <!--   l. 45   --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mrow><mi>α</mi></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup><mo class="MathClass-rel">∈</mo> <mo class="MathClass-open" stretchy="false">[</mo><mi>k</mi><mo class="MathClass-punc">,</mo><mi>l</mi><mo class="MathClass-close" stretchy="false">]</mo></mrow></math>:
+</p>
+<pre class="fancyvrb" id="fancyvrb1"><a id="x1-12r1"></a><span class="ectt-1095">l </span><span class="textcolor-656565"><span class="ectt-1095">:=</span></span><span class="ectt-1095"> L</span> 
+<a id="x1-14r2"></a><span class="ectt-1095">k </span><span class="textcolor-656565"><span class="ectt-1095">:=</span></span><span class="ectt-1095"> K</span> 
+<a id="x1-16r3"></a><span class="textcolor-007f00"><span class="ectt-1095">while</span></span><span class="ectt-1095"> l</span><span class="textcolor-656565"><span class="ectt-1095">-</span></span><span class="ectt-1095">k </span><span class="textcolor-656565"><span class="ectt-1095">&gt;</span></span><span class="ectt-1095"> eps:</span> 
+<a id="x1-18r4"></a><span class="ectt-1095">   alpha </span><span class="textcolor-656565"><span class="ectt-1095">:=</span></span><span class="ectt-1095"> (l</span><span class="textcolor-656565"><span class="ectt-1095">-</span></span><span class="ectt-1095">k) </span><span class="textcolor-656565"><span class="ectt-1095">/</span></span><span class="ectt-1095"> </span><span class="textcolor-656565"><span class="ectt-1095">2</span></span> 
+<a id="x1-20r5"></a><span class="ectt-1095">   solve system of inequalities</span> 
+<a id="x1-22r6"></a><span class="ectt-1095">   </span><span class="textcolor-007f00"><span class="ectt-1095">if</span></span><span class="ectt-1095"> x</span><span class="textcolor-656565"><span class="ectt-1095">*</span></span><span class="ectt-1095"> exists:</span> 
+<a id="x1-24r7"></a><span class="ectt-1095">       u </span><span class="textcolor-656565"><span class="ectt-1095">:=</span></span><span class="ectt-1095"> alpha</span> 
+<a id="x1-26r8"></a><span class="ectt-1095">   </span><span class="textcolor-007f00"><span class="ectt-1095">else</span></span><span class="ectt-1095">:</span> 
+<a id="x1-28r9"></a><span class="ectt-1095">       l </span><span class="textcolor-656565"><span class="ectt-1095">:=</span></span><span class="ectt-1095"> alpha</span></pre>
+<!--   l. 59   --><p class="indent">   Since we are halving <!--   l. 59   --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo class="MathClass-open" stretchy="false">[</mo><mi>k</mi><mo class="MathClass-punc">,</mo><mi>l</mi><mo class="MathClass-close" stretchy="false">]</mo></mrow></math>
+at each iteration, the number of iterations must be
+<!--   l. 59   --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"> <mrow><mo fence="true" form="prefix"> ⌈</mo><mrow><msub><mrow><mi class="qopname">log</mi><mo> ⁡<!--   FUNCTION APPLICATION   --> </mo><!--   nolimits   --></mrow><mrow><mn>2</mn></mrow></msub><mfrac><mrow><mi>L</mi> <mo class="MathClass-bin">−</mo> <mi>K</mi></mrow>
+<mrow><mi>𝜖</mi></mrow></mfrac> </mrow><mo fence="true" form="postfix">⌉</mo></mrow></math>.
+</p>
+</div>
+<div class="d-flex align-items-center mt-3">
+<div class="ms-auto"><div class="d-flex align-items-center ms-3 text-muted small">
+<img alt="User profile picture" class="rounded me-2" onerror="this.onerror=null; this.src='/resources/static/img/proxy/user.svg';" src="https://solverer.com/resources/public/images/users/mini/1.webp" style="width:32px; height:32px; object-fit:cover;"/>
+<div>
+<div>
+<a class="fw-semibold text-decoration-none" href="/users/eluthingol">eluthingol</a>
+</div>
+<div class="small">2022-02-11 10:07</div>
+</div>
+</div></div>
+</div>
+<div class="mt-4" id="comments-2574">
+<h6 class="text-muted mb-3">Comments</h6>
+<ul class="list-unstyled mb-0" id="comments-list-2574">
+</ul>
+<!-- Button to open comment input -->
+<button class="btn btn-sm btn-outline-primary mt-2" data-bs-target="#loginModal" data-bs-toggle="modal" type="button">Comment</button>
+</div>
+</div> <!-- card-body -->
+</div> <!-- card -->
+</div>
+<div class="col-12">
+<div class="card h-100 flex-row">
+<div class="card-body d-flex flex-column justify-content-between">
+<div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+<!--  l. 22  --><p class="noindent"><span class="ecbx-1000">(Alternative solution) </span>Consider a non-linear transformation defined by
+</p>
+<table class="equation"><tr><td>
+<!--  l. 24  --><p class="indent">
+</p><!--  l. 24  --><math class="equation" display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mstyle class="label" id="x1-2r1"></mstyle><!--  endlabel  --><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-rel">↔</mo><mfrac><mrow> <mn>1</mn></mrow>
+<mrow><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>g</mi></mrow></mfrac> <mo class="MathClass-bin">⋅</mo><mstyle mathvariant="bold"><mi>x</mi></mstyle><mo class="MathClass-punc">;</mo><mspace class="qquad" width="2em"></mspace><mi>t</mi> <mo class="MathClass-rel">↔</mo><mfrac><mrow> <mn>1</mn></mrow>
+<mrow><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi>g</mi></mrow></mfrac><mo class="MathClass-punc">.</mo>
+</mrow></math></td><td class="eq-no">(1)</td></tr></table>
+<!--  l. 29  --><p class="indent">   This transformation maps each feasible solution
+<!--  l. 29  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mstyle mathvariant="bold"><mi>x</mi></mstyle></math>
+of the fractional optimization problem to a pair
+<!--  l. 29  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"> <mrow><mo fence="true" form="prefix"> [</mo><mrow><mtable align="axis" class="array" columnlines="none none none none none none none none none" displaystyle="true" equalcolumns="false" equalrows="false" style=""><mtr class="array-row"><mtd class="array-td" columnalign="center"><mstyle mathvariant="bold"><mi>y</mi></mstyle></mtd></mtr> <mtr class="array-row"><mtd class="array-td" columnalign="center"><mi>t</mi></mtd></mtr> <!--  *\c@MaxMatrixCols c  --></mtable> </mrow><mo fence="true" form="postfix">]</mo></mrow></math>.
+Performing a change of variables in our optimization problem using this
+transformation results in the following linear optimization problem:
+</p>
+<table class="equation-star"><tr><td>
+<!--  l. 31  --><math class="equation" display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+<mtable align="axis" class="array" columnlines="none none none" displaystyle="true" equalcolumns="false" equalrows="false" style=""> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>minimize</mtext></mstyle><mspace class="quad" width="1em"></mspace> </mtd><mtd class="array-td" columnalign="left"><msup><mrow><mstyle mathvariant="bold"><mi>c</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi mathvariant="italic">td</mi> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"><mstyle class="text"><mtext>subject to</mtext></mstyle><mspace class="quad" width="1em"></mspace></mtd><mtd class="array-td" columnalign="left"><mstyle mathvariant="bold"><mi>Ay</mi></mstyle> <mo class="MathClass-bin">−</mo> <mi>t</mi><mstyle mathvariant="bold"><mi>b</mi></mstyle> <mo class="MathClass-rel">≤</mo><mstyle mathvariant="bold"><mn>0</mn></mstyle></mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><mstyle mathvariant="bold"><mi>y</mi></mstyle> <mo class="MathClass-bin">+</mo> <mi mathvariant="italic">tg</mi> <mo class="MathClass-rel">=</mo> <mn>1</mn> </mtd>
+</mtr> <mtr class="array-row"><mtd class="array-td" columnalign="left"> </mtd><mtd class="array-td" columnalign="left"><mi>t</mi> <mo class="MathClass-rel">≥</mo> <mn>0</mn> </mtd></mtr><!--  llll  --></mtable>
+</mrow></math></td></tr></table>
+<!--  l. 41  --><p class="indent">   Notice that the transformation defined in (<a href="#x1-2r1">1<!--  tex4ht:ref: transformation   --></a>) is invertible, and it is easy to verify that the inverse
+transformation <!--  l. 41  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle> <mo class="MathClass-rel">↔</mo><mstyle mathvariant="bold"><mi>y</mi></mstyle><mo class="MathClass-bin">∕</mo><mi>t</mi></mrow></math>
+maps each feasible solution of the fractional optimization problem to a feasible solution
+of the linear optimization problem. Thus, the fractional optimization problem is feasible
+if and only if the linear optimization problem is feasible. Furthermore, every feasible
+solution <!--  l. 41  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><msup><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup></math>
+                                                                  
+
+                                                                  
+of the fractional optimization problem gives the same optimal cost as the corresponding
+solution <!--  l. 41  --><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"> <mrow><mo fence="true" form="prefix"> [</mo><mrow><mtable align="axis" class="array" columnlines="none none none none none none none none none" displaystyle="true" equalcolumns="false" equalrows="false" style=""><mtr class="array-row"><mtd class="array-td" columnalign="center"><msup><mrow><mstyle mathvariant="bold"><mi>y</mi></mstyle></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup></mtd>
+</mtr><mtr class="array-row"><mtd class="array-td" columnalign="center"><msup><mrow><mi>t</mi></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup></mtd></mtr> <!--  *\c@MaxMatrixCols c  --></mtable> </mrow><mo fence="true" form="postfix">]</mo></mrow></math>
+of the linear optimization problem:
+</p><!--  l. 43  --><p class="indent">
+<!--  tex4ht:inline  --></p><!--  l. 43  --><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><msup><mrow>
+<mstyle mathvariant="bold"><mi>c</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><msup><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup> <mo class="MathClass-bin">+</mo> <mi>d</mi></mrow>
+<mrow><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><msup><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup> <mo class="MathClass-bin">+</mo> <mi>g</mi></mrow></mfrac> <mo class="MathClass-rel">=</mo><mfrac><mrow> <mn>1</mn></mrow>
+<mrow><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><msup><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup> <mo class="MathClass-bin">+</mo> <mi>g</mi></mrow></mfrac><msup><mrow><mstyle mathvariant="bold"><mi>c</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><msup><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup> <mo class="MathClass-bin">+</mo><mfrac><mrow> <mn>1</mn></mrow>
+<mrow><msup><mrow><mstyle mathvariant="bold"><mi>f</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><msup><mrow><mstyle mathvariant="bold"><mi>x</mi></mstyle></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup> <mo class="MathClass-bin">+</mo> <mi>g</mi></mrow></mfrac><mi>d</mi> <mo class="MathClass-rel">=</mo><msup><mrow> <mstyle mathvariant="bold"><mi>c</mi></mstyle></mrow><mrow><mi>′</mi></mrow></msup><msup><mrow><mstyle mathvariant="bold"><mi>y</mi></mstyle></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup> <mo class="MathClass-bin">+</mo> <msup><mrow><mi>t</mi></mrow><mrow><mtext class="MathClass-bin">∗</mtext></mrow></msup><mi>d</mi><mo class="MathClass-punc">.</mo>
+</mrow></math>
+<!--  l. 45  --><p class="nopar">
+</p><!--  l. 47  --><p class="indent">   Thus, both optimization problems have the same optimal cost.
+</p>
+</div>
+<div class="d-flex align-items-center mt-3">
+<div class="ms-auto"><div class="d-flex align-items-center ms-3 text-muted small">
+<img alt="User profile picture" class="rounded me-2" onerror="this.onerror=null; this.src='/resources/static/img/proxy/user.svg';" src="https://solverer.com/resources/public/images/users/mini/1.webp" style="width:32px; height:32px; object-fit:cover;"/>
+<div>
+<div>
+<a class="fw-semibold text-decoration-none" href="/users/eluthingol">eluthingol</a>
+</div>
+<div class="small">2022-02-11 11:06</div>
+</div>
+</div></div>
+</div>
+<div class="mt-4" id="comments-2575">
+<h6 class="text-muted mb-3">Comments</h6>
+<ul class="list-unstyled mb-0" id="comments-list-2575">
+</ul>
+<!-- Button to open comment input -->
+<button class="btn btn-sm btn-outline-primary mt-2" data-bs-target="#loginModal" data-bs-toggle="modal" type="button">Comment</button>
+</div>
+</div> <!-- card-body -->
+</div> <!-- card -->
+</div> <!-- col -->
+</div> <!-- row -->
+</div>
+</div>
+<!-- Add Category -->
+<!-- If user is authenticated → open category modal -->
+<!-- If user is NOT authenticated → open login modal -->
+<button class="btn btn-primary" data-bs-target="#loginModal" data-bs-toggle="modal" style="margin-top: 20px;">Add answer</button>
+<div class="modal fade" id="answerModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">
+<span>Add answer</span>
+</h5>
+<button class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/solutions" id="answerForm" method="post">
+<input name="canonicalContentId" type="hidden" value="1331"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="errorAlert" role="alert">
+<strong>Error:</strong> <span id="errorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" name="description" placeholder="Problem text in LaTeX…" required="" rows="5"></textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="submitButton" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="submitLoadingButton" style="display:none"><span class="spinner-border spinner-border-sm me-2"></span><span>Creating</span>...</button>
+</div>
+</form>
+</div>
+</div>
+
+</div>
+<div aria-hidden="true" aria-labelledby="editProblemLabel" class="modal fade" id="editProblemModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="editProblemLabel">Edit</h5>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<form action="/api/solverer/problems/edit" id="editProblemForm" method="post">
+<input name="problemId" type="hidden" value="1331"/>
+<input name="languageCode" type="hidden" value="en"/>
+<div class="modal-body">
+<div class="alert alert-danger alert-dismissible fade show d-none" id="editProblemErrorAlert" role="alert">
+<strong>Error</strong> <span id="editProblemErrorMessage"></span>
+<button class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+<div class="mb-3 chapter-selector" data-parent-id="152" data-search-url="/api/content-tags/search">
+<label class="form-label">Chapter</label>
+<input name="chapterTagId" type="hidden" value=""/>
+<input autocomplete="off" class="form-control chapter-select" name="chapter" placeholder="4.1 Differentiation" required="" type="text" value=""/>
+</div>
+<div class="mb-3">
+<label for="editName">Problem name</label>
+<input class="form-control" id="editName" name="name" placeholder="Problem name" required="" type="text" value="Exercise 1.13 (Linear fractional programming)"/>
+</div>
+<div class="mb-3">
+<label class="form-label">Text (in LaTeX)</label>
+<textarea class="form-control" id="editDescription" name="description" placeholder="Problem text in LaTeX…" required="" rows="5">Consider the problem
+$$
+\begin{array}{cl}
+\text { minimize } &amp; \dfrac{\mathbf{c}^{\prime} \mathbf{x}+d}{\mathbf{f}^{\prime} \mathbf{x}+g} \\
+\text { subject to } &amp; \mathbf{A x} \leq \mathbf{b} \\
+&amp; \mathbf{f}^{\prime} \mathbf{x}+g&gt;0
+\end{array}
+$$
+Suppose that we have some prior knowledge that the optimal cost belongs to an interval $[K, L]$. Provide a procedure, that uses linear programming as a subroutine, and that allows us to compute the optimal cost within any desired accuracy. Hint: Consider the problem of deciding whether the optimal cost is less than or equal to a certain number.</textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancel</button>
+<button class="btn btn-primary" id="editProblemSubmit" type="submit">Submit</button>
+<button class="btn btn-primary" disabled="" id="editProblemSubmitting" style="display:none">
+<span class="spinner-border spinner-border-sm me-2"></span>
+<span>Saving</span>...
+                              </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+
+</main>
+</div>
+</div>
+<div>
+<div aria-hidden="true" aria-labelledby="loginModalLabel" class="modal fade" id="loginModal" role="dialog" tabindex="-1">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<!-- Modal Header -->
+<div class="modal-header">
+<h5 class="modal-title" id="loginModalLabel">Sign In</h5>
+<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<!-- Modal Body with Login Form -->
+<div class="modal-body">
+<form action="/login" method="post">
+<input id="failureRedirect" name="failureRedirect" type="hidden"/>
+<!-- Username Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="username" name="username" placeholder="Email" required="" type="text"/>
+<label for="email">Email</label>
+</div>
+</div>
+<!-- Password Field -->
+<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" id="password" name="password" placeholder="Password" required="" type="password"/>
+<label for="password">Password</label>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="modal-footer">
+<button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+<button class="btn btn-primary" type="submit">Sign In</button>
+</div>
+</form>
+<div class="d-flex flex-column auth-actions">
+<div><span>Forgot your password?</span> <a href="/auth/password/reset-request">Reset</a></div>
+<div><span>Not a member?</span> <a href="/auth/signup">Sign up</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</main>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="footer">
+            <p>Complete Solutions Document</p>
+            <p>Introduction to Linear Optimization by Dimitris Bertsimas</p>
+            <p>Generated on: 2026-01-06 23:48:59</p>
+            <p class="source-url">Source: https://solverer.com/solutions/dimitris-bertsimas/introduction-to-linear-optimization</p>
+            <p style="margin-top: 20px;">
+                <button onclick="printDocument()" style="padding: 10px 20px; background: #5e33bf; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    🖨️ Print This Document
+                </button>
+            </p>
+        </div>
+    </div>
+    
+    <!-- 导航按钮 -->
+    <div class="navigation">
+        <a href="#top" class="nav-btn" id="backToTop" style="display: none;">↑</a>
+        <a href="javascript:window.print()" class="nav-btn">🖨️</a>
+    </div>
+</body>
+</html>
